@@ -1,9 +1,9 @@
 {
-  "name": "gomodtree",
-  "displayName": "go mod tree",
+  "name": "gomodexplorer",
+  "displayName": "GoModExplorer",
   "description": "",
   "publisher": "r3inbowari",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -19,32 +19,18 @@
       {
         "command": "gomod.openResource",
         "title": "Open Resource"
-      },
-      {
-        "command": "gomod.refreshEntry",
-        "title": "Refresh",
-        "icon": {
-          "light": "collapse-all",
-          "dark": "collapse-all"
-        }
       }
     ],
     "views": {
       "explorer": [
         {
           "id": "gomod",
-          "name": "Mod"
+          "name": "GoMod"
         }
       ]
     },
     "menus": {
-      "view/title": [
-        {
-          "command": "gomod.refreshEntry",
-          "when": "1===2",
-          "group": "navigation"
-        }
-      ]
+      "view/title": []
     }
   },
   "scripts": {

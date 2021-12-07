@@ -1,8 +1,7 @@
 import { watch } from "fs";
-import { userInfo } from "os";
 import * as vscode from "vscode";
-import { parseMod } from "./file";
 import { ModTree } from "./goMod";
+import { exec } from "child_process";
 
 export function activate(context: vscode.ExtensionContext) {
   vscode.workspace.workspaceFolders?.forEach((e, index) => {
@@ -14,29 +13,32 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.window.showInformationMessage("Go mod attach");
 
-  let disposable1 = vscode.commands.registerCommand(
-    "gomod.refreshEntry",
-    () => {
-      vscode.window.showInformationMessage("Hello");
-    }
-  );
-
   vscode.commands.registerCommand("gomod.openResource", (resource) =>
     openResource(resource)
   );
-  context.subscriptions.push(disposable1);
+  // context.subscriptions.push();
 }
 
 export function deactivate() {}
 
 function updateTree(e: any) {
-  let dat = parseMod(e.uri.fsPath + "/go.mod");
-  console.log(dat);
-  vscode.window.createTreeView("gomod", {
-    treeDataProvider: new ModTree(dat),
-  });
+  exec(
+    "cd " + e.uri.fsPath + " && go list -mod=readonly -m -json all",
+    function (error, stdout, stderr) {
+      if (error === null && stderr === "") {
+        stdout = stdout.replace(new RegExp("}", "g"), "},");
+        stdout = stdout.replace("{", "[{");
+        stdout = stdout.trimRight();
+        stdout = stdout.substr(0, stdout.length - 1) + "]";
+        let dat = JSON.parse(stdout);
+        vscode.window.createTreeView("gomod", {
+          treeDataProvider: new ModTree(dat),
+        });
+      }
+    }
+  );
 }
 
 function openResource(resource: vscode.Uri): void {
-  vscode.window.showTextDocument(resource);
+  vscode.window.showTextDocument(vscode.Uri.file(resource.toString(true)));
 }

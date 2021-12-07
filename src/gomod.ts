@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { ModFile } from "./file";
 import { readdirSync, statSync } from "fs";
-import { userInfo } from "os";
 
 export interface ModNode {
   isDirectory: boolean;
@@ -9,21 +8,14 @@ export interface ModNode {
   name: string;
 }
 
-const pat =
-  userInfo().homedir.replace(new RegExp("\\\\", "g"), "/") + "/go/pkg/mod/";
-
 export class ModTree
   implements
     vscode.TreeDataProvider<ModNode>,
     vscode.TextDocumentContentProvider
 {
-  data: ModFile;
-  active: boolean = false;
+  data: [];
 
   constructor(dat: any) {
-    if (!this.active) {
-      this.active = true;
-    }
     this.data = dat;
   }
 
@@ -51,27 +43,31 @@ export class ModTree
   getChildren(element?: ModNode): vscode.ProviderResult<ModNode[]> {
     let ret: ModNode[] = [];
     if (element === undefined) {
-      // root
-      this.data.require.forEach((res) => {
-        ret?.push({
-          resource: vscode.Uri.parse(
-            pat + res.mod.path + "@" + res.mod.version
-          ),
-          isDirectory: true,
-          name: res.mod.path + "@" + res.mod.version,
-        });
+      this.data.forEach((res: ModFile, index: number) => {
+        if (index !== 0 && res.Dir !== undefined) {
+          ret?.push({
+            resource: vscode.Uri.parse(res.Dir),
+            isDirectory: res.Dir !== undefined,
+            name: res.Path,
+          });
+        }
       });
     } else {
-      const result = readdirSync(element.resource.path);
+      const result = readdirSync(element.resource.toString(true));
       result.forEach((res) => {
         ret.push({
           name: res,
-          resource: vscode.Uri.parse(element.resource.path + "/" + res),
+          resource: vscode.Uri.parse(
+            element.resource.toString(true) + "\\" + res
+          ),
           isDirectory: !statSync(element.resource.path + "/" + res).isFile(),
         });
       });
     }
-    return ret;
+    return ret.sort(
+      ({ isDirectory: s1 = false }, { isDirectory: s2 = false }) =>
+        Number(s2) - Number(s1)
+    );
   }
 
   onDidChange?: vscode.Event<vscode.Uri> | undefined;
