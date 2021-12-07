@@ -9,6 +9,7 @@ export interface ModFile {
   GoVersion: string;
   Main: boolean;
   Path: string;
+  Version: string;
 }
 
 // A Go is the go statement.

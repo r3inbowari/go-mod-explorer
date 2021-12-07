@@ -48,7 +48,7 @@ export class ModTree
           ret?.push({
             resource: vscode.Uri.parse(res.Dir),
             isDirectory: res.Dir !== undefined,
-            name: res.Path,
+            name: res.Path + " " + res.Version,
           });
         }
       });
