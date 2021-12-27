@@ -53,13 +53,17 @@ export class ModTree
         }
       });
     } else {
-      const result = readdirSync(element.resource.toString(true));
+      const result =
+        process.platform === "win32"
+          ? readdirSync(element.resource.toString(true))
+          : readdirSync(element.resource.path);
       result.forEach((res) => {
         ret.push({
           name: res,
-          resource: vscode.Uri.parse(
-            element.resource.toString(true) + "\\" + res
-          ),
+          resource:
+            process.platform === "win32"
+              ? vscode.Uri.parse(element.resource.toString(true) + "\\" + res)
+              : vscode.Uri.parse(element.resource.toString(true) + "/" + res),
           isDirectory: !statSync(element.resource.path + "/" + res).isFile(),
         });
       });

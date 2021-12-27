@@ -1,6 +1,6 @@
 import { watch } from "fs";
 import * as vscode from "vscode";
-import { ModTree } from "./goMod";
+import { ModTree } from "./gomod";
 import { exec } from "child_process";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -40,5 +40,9 @@ function updateTree(e: any) {
 }
 
 function openResource(resource: vscode.Uri): void {
-  vscode.window.showTextDocument(vscode.Uri.file(resource.toString(true)));
+  if (process.platform === "win32") {
+    vscode.window.showTextDocument(vscode.Uri.file(resource.toString(true)));
+  } else {
+    vscode.window.showTextDocument(vscode.Uri.parse(resource.toString(true)));
+  }
 }
