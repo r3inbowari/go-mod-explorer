@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "",
   "publisher": "r3inbowari",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.62.0"
   },
