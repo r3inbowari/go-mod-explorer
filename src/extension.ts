@@ -28,18 +28,18 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function openEx(res: any) {
-  let p = resolvePath(res.resource)
+  let p = resolvePath(res.resource);
   let stat = fs.lstatSync(p);
 
   if (stat.isFile()) {
     // trim right in order to get parent
     // node relative to the current file.
-    p = getParentNode(p)
+    p = getParentNode(p);
   }
   openExplorer(p, (err: any) => {
     if (err) {
       console.log(err);
-    } 
+    }
   });
 }
 

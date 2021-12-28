@@ -54,7 +54,7 @@ export class ModTree
         }
       });
     } else {
-      const result = readdirSync(resolvePath(element.resource))
+      const result = readdirSync(resolvePath(element.resource));
       result.forEach((res) => {
         ret.push({
           name: res,
