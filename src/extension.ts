@@ -8,14 +8,23 @@ const openExplorer = require("open-file-explorer");
 const fs = require("fs");
 
 export function activate(context: vscode.ExtensionContext) {
+  let bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+  bar.text = "$(loading~spin) Loading Go module explorer";
+  bar.show();
   vscode.workspace.workspaceFolders?.forEach((e, index) => {
     updateTree(e);
+    setTimeout(() => {
+      bar.hide();
+    }, 3000);
     watch(e.uri.fsPath + "/go.mod", (action, file) => {
+      bar.show();
       updateTree(e);
+      setTimeout(() => {
+        bar.hide();
+      }, 3000);
     });
   });
-
-  vscode.window.showInformationMessage("Go mod attach");
+  // vscode.window.showInformationMessage("Go mod attach");
 
   vscode.commands.registerCommand("gomod.openResource", (resource) =>
     openResource(resource)
