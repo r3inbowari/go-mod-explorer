@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { ModFile } from "./file";
-import { readdirSync, statSync } from "fs";
+import { readdir, readdirSync, statSync } from "fs";
+import { resolvePath } from "./utils";
 
 export interface ModNode {
   isDirectory: boolean;
@@ -53,10 +54,7 @@ export class ModTree
         }
       });
     } else {
-      const result =
-        process.platform === "win32"
-          ? readdirSync(element.resource.toString(true))
-          : readdirSync(element.resource.path);
+      const result = readdirSync(resolvePath(element.resource))
       result.forEach((res) => {
         ret.push({
           name: res,

@@ -2,6 +2,7 @@ import { watch } from "fs";
 import * as vscode from "vscode";
 import { ModTree } from "./gomod";
 import { exec } from "child_process";
+import { getParentNode, resolvePath } from "./utils";
 
 const openExplorer = require("open-file-explorer");
 const fs = require("fs");
@@ -27,26 +28,18 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function openEx(res: any) {
-  let test = res.resource.toString(true);
-  console.log();
-  const path = "C:\\Users";
-
-  var stat = fs.lstatSync(test);
-  console.log(stat.isFile());
+  let p = resolvePath(res.resource)
+  let stat = fs.lstatSync(p);
 
   if (stat.isFile()) {
-    // trim right in order to get parent node relative to the current file.
-    let n = test.lastIndexOf("\\");
-    test = test.substring(0, n);
-    console.log(test.substring(0, n));
+    // trim right in order to get parent
+    // node relative to the current file.
+    p = getParentNode(p)
   }
-
-  openExplorer(test, (err: any) => {
+  openExplorer(p, (err: any) => {
     if (err) {
       console.log(err);
-    } else {
-      //Do Something
-    }
+    } 
   });
 }
 
