@@ -4,6 +4,7 @@
   "description": "",
   "publisher": "r3inbowari",
   "version": "0.1.2",
+  "icon": "favicon.icon",
   "engines": {
     "vscode": "^1.62.0"
   },
