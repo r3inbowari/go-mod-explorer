@@ -1,7 +1,7 @@
 {
   "name": "gomodexplorer",
   "displayName": "Go Mod Explorer",
-  "description": "",
+  "description": "Displays the external library of the current Go project in the explorer.",
   "publisher": "r3inbowari",
   "version": "0.1.2",
   "icon": "favicon.ico",
