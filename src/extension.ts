@@ -2,6 +2,10 @@ import { watch } from "fs";
 import * as vscode from "vscode";
 import { ModTree } from "./gomod";
 import { exec } from "child_process";
+import { getParentNode, resolvePath } from "./utils";
+
+const openExplorer = require("open-file-explorer");
+const fs = require("fs");
 
 export function activate(context: vscode.ExtensionContext) {
   vscode.workspace.workspaceFolders?.forEach((e, index) => {
@@ -17,6 +21,26 @@ export function activate(context: vscode.ExtensionContext) {
     openResource(resource)
   );
   // context.subscriptions.push();
+
+  vscode.commands.registerCommand("gomod.openByFileExplorer", (resource) =>
+    openEx(resource)
+  );
+}
+
+function openEx(res: any) {
+  let p = resolvePath(res.resource);
+  let stat = fs.lstatSync(p);
+
+  if (stat.isFile()) {
+    // trim right in order to get parent
+    // node relative to the current file.
+    p = getParentNode(p);
+  }
+  openExplorer(p, (err: any) => {
+    if (err) {
+      console.log(err);
+    }
+  });
 }
 
 export function deactivate() {}

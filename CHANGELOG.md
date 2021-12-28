@@ -1,9 +1,13 @@
 # Change Log
 
-All notable changes to the "hello" extension will be documented in this file.
+[0.1.0]
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+1. basic function realization
 
-## [Unreleased]
+[0.1.1]
 
-- Initial release
+1. fix: load error path on linux/mac
+
+[0.1.1]
+
+1. add: open by file explorer support
