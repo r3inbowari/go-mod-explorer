@@ -4,7 +4,7 @@
   "description": "",
   "publisher": "r3inbowari",
   "version": "0.1.2",
-  "icon": "favicon.icon",
+  "icon": "https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/favicon.ico",
   "engines": {
     "vscode": "^1.62.0"
   },
