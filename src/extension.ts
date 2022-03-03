@@ -3,6 +3,8 @@ import * as vscode from "vscode";
 import { ModTree } from "./gomod";
 import { exec } from "child_process";
 import { getParentNode, resolvePath } from "./utils";
+import ExpanderProvider from "./expander";
+import { setInterval } from "timers";
 
 const openExplorer = require("open-file-explorer");
 const fs = require("fs");
@@ -34,6 +36,12 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("gomod.openByFileExplorer", (resource) =>
     openEx(resource)
   );
+
+  // golang languages selector
+  let goSelector: vscode.DocumentSelector = { scheme: "file", language: "go" };
+  // provide function
+  const goProvide = new ExpanderProvider();
+  vscode.languages.registerDefinitionProvider(goSelector, goProvide);
 }
 
 function openEx(res: any) {
@@ -64,9 +72,20 @@ function updateTree(e: any) {
         stdout = stdout.trimRight();
         stdout = stdout.substr(0, stdout.length - 1) + "]";
         let dat = JSON.parse(stdout);
-        vscode.window.createTreeView("gomod", {
-          treeDataProvider: new ModTree(dat),
+        let mt = new ModTree(dat);
+        let d = vscode.window.createTreeView("gomod", {
+          treeDataProvider: mt,
         });
+
+        // setInterval(() => {
+        //   if (mt.getRootLen() > 0) {
+        //     d.reveal(mt.getRootFirst(), {
+        //       select: true,
+        //       focus: true,
+        //       expand: false,
+        //     });
+        //   }
+        // }, 12000);
       }
     }
   );
