@@ -16,6 +16,29 @@ export class ModTree
 {
   data: [];
 
+  rootLength = 0;
+  rootFirst: ModNode = {
+    isDirectory: false,
+    resource: vscode.Uri.parse("./"),
+    name: "root: not found anything",
+  };
+
+  // Number of root dirs
+  getRootLen(): Number {
+    return this.rootLength;
+  }
+
+  getParent(element: ModNode): ModNode | null {
+    if (element.name !== "root: not found anything") {
+      return element;
+    }
+    return null;
+  }
+
+  getRootFirst(): ModNode {
+    return this.rootFirst;
+  }
+
   constructor(dat: any) {
     this.data = dat;
   }
@@ -51,8 +74,14 @@ export class ModTree
             isDirectory: res.Dir !== undefined,
             name: res.Path + " " + res.Version,
           });
+          // set root len
+          this.rootLength = index;
         }
       });
+
+      if (ret.length > 0) {
+        this.rootFirst = ret[0];
+      }
     } else {
       const result = readdirSync(resolvePath(element.resource));
       result.forEach((res) => {
