@@ -10,4 +10,8 @@
 
 [0.1.1]
 
-1. add: open by file explorer support
+1. add: support open by file explorer
+
+[0.1.5]
+
+1. add: support focus explorer
