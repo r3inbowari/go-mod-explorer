@@ -16,38 +16,27 @@ export class ModTree
 {
   data: [];
 
-  rootLen = 0;
-  rootTwo: ModNode = {
+  rootLength = 0;
+  rootFirst: ModNode = {
     isDirectory: false,
     resource: vscode.Uri.parse("./"),
-    name: "not found anything",
+    name: "root: not found anything",
   };
+
+  // Number of root dirs
   getRootLen(): Number {
-    return this.rootLen;
+    return this.rootLength;
   }
 
   getParent(element: ModNode): ModNode | null {
-    // if (element.name !== "not found anything") {
-    //   return element;
-    // }
-    // return null;
+    if (element.name !== "root: not found anything") {
+      return element;
+    }
     return null;
   }
 
   getRootFirst(): ModNode {
-    // if (this.rootTwo !== undefined) {
-    //   return this.rootTwo;
-    // }
-    // let a: ModFile = {
-    //   Dir: undefined,
-    //   GoMod: "",
-    //   GoVersion: "",
-    //   Main: false,
-    //   Path: "",
-    //   Version: "",
-    // };
-    // return a;
-    return this.rootTwo;
+    return this.rootFirst;
   }
 
   constructor(dat: any) {
@@ -86,12 +75,12 @@ export class ModTree
             name: res.Path + " " + res.Version,
           });
           // set root len
-          this.rootLen = index;
+          this.rootLength = index;
         }
       });
 
       if (ret.length > 0) {
-        this.rootTwo = ret[0];
+        this.rootFirst = ret[0];
       }
     } else {
       const result = readdirSync(resolvePath(element.resource));

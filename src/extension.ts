@@ -1,10 +1,9 @@
 import { watch } from "fs";
 import * as vscode from "vscode";
-import { ModTree } from "./gomod";
+import { ModNode, ModTree } from "./gomod";
 import { exec } from "child_process";
 import { getParentNode, resolvePath } from "./utils";
 import ExpanderProvider from "./expander";
-import { setInterval } from "timers";
 
 const openExplorer = require("open-file-explorer");
 const fs = require("fs");
@@ -37,6 +36,16 @@ export function activate(context: vscode.ExtensionContext) {
     openEx(resource)
   );
 
+  // focus to gomod explorer
+  vscode.commands.registerCommand("gomod.focus", () => {
+    focusGomod();
+  });
+
+  // blur and back to the previous(editor area) focus position.
+  vscode.commands.registerCommand("gomod.blur", () => {
+    vscode.commands.executeCommand("workbench.view.explorer");
+  });
+
   // golang languages selector
   let goSelector: vscode.DocumentSelector = { scheme: "file", language: "go" };
   // provide function
@@ -62,6 +71,8 @@ function openEx(res: any) {
 
 export function deactivate() {}
 
+let d: vscode.TreeView<ModNode>;
+let mt: ModTree;
 function updateTree(e: any) {
   exec(
     "cd " + e.uri.fsPath + " && go list -mod=readonly -m -json all",
@@ -72,23 +83,23 @@ function updateTree(e: any) {
         stdout = stdout.trimRight();
         stdout = stdout.substr(0, stdout.length - 1) + "]";
         let dat = JSON.parse(stdout);
-        let mt = new ModTree(dat);
-        let d = vscode.window.createTreeView("gomod", {
+        mt = new ModTree(dat);
+        d = vscode.window.createTreeView("gomod", {
           treeDataProvider: mt,
         });
-
-        // setInterval(() => {
-        //   if (mt.getRootLen() > 0) {
-        //     d.reveal(mt.getRootFirst(), {
-        //       select: true,
-        //       focus: true,
-        //       expand: false,
-        //     });
-        //   }
-        // }, 12000);
       }
     }
   );
+}
+
+function focusGomod() {
+  if (mt.getRootLen() > 0) {
+    d.reveal(mt.getRootFirst(), {
+      select: true,
+      focus: true,
+      expand: false,
+    });
+  }
 }
 
 function openResource(resource: vscode.Uri): void {
