@@ -32,6 +32,10 @@ export function activate(context: vscode.ExtensionContext) {
   );
   // context.subscriptions.push();
 
+  vscode.commands.registerCommand("gomod.findInFiles", (resource) => {
+    findInFiles(resource);
+  });
+
   vscode.commands.registerCommand("gomod.openByFileExplorer", (resource) =>
     openEx(resource)
   );
@@ -108,4 +112,29 @@ function openResource(resource: vscode.Uri): void {
   } else {
     vscode.window.showTextDocument(vscode.Uri.parse(resource.toString(true)));
   }
+}
+
+// ref: https://github.com/microsoft/vscode/blob/4a130c40ed876644ed8af2943809d08221375408/src/vs/workbench/contrib/searchEditor/browser/searchEditorInput.ts#L36
+// export type SearchConfiguration = {
+//   query: string;
+//   filesToInclude: string;
+//   filesToExclude: string;
+//   contextLines: number;
+//   matchWholeWord: boolean;
+//   isCaseSensitive: boolean;
+//   isRegexp: boolean;
+//   useExcludeSettingsAndIgnoreFiles: boolean;
+//   showIncludesExcludes: boolean;
+//   onlyOpenEditors: boolean;
+// };
+function findInFiles(res: any): void {
+  let p = resolvePath(res.resource);
+  vscode.commands.executeCommand("workbench.action.findInFiles", {
+    query: "",
+    isRegex: true,
+    triggerSearch: true,
+    focusResults: true,
+    filesToExclude: "",
+    filesToInclude: p,
+  });
 }
