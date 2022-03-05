@@ -15,7 +15,7 @@ export class ModTree
     vscode.TextDocumentContentProvider
 {
   data: [];
-
+  hideHostname = true;
   rootLength = 0;
   rootFirst: ModNode = {
     isDirectory: false,
@@ -39,7 +39,8 @@ export class ModTree
     return this.rootFirst;
   }
 
-  constructor(dat: any) {
+  constructor(dat: any, hide: any) {
+    this.hideHostname = hide;
     this.data = dat;
   }
 
@@ -67,12 +68,20 @@ export class ModTree
   getChildren(element?: ModNode): vscode.ProviderResult<ModNode[]> {
     let ret: ModNode[] = [];
     if (element === undefined) {
+      // this is the root dir
       this.data.forEach((res: ModFile, index: number) => {
         if (index !== 0 && res.Dir !== undefined) {
+          // decide whether need to hide the hostname and version tag
+          let nameCombine = "";
+          if (this.hideHostname) {
+            nameCombine = res.Path.substring(res.Path.indexOf("/") + 1);
+          } else {
+            nameCombine = res.Path + " " + res.Version;
+          }
           ret?.push({
             resource: vscode.Uri.parse(res.Dir),
             isDirectory: res.Dir !== undefined,
-            name: res.Path + " " + res.Version,
+            name: nameCombine,
           });
           // set root len
           this.rootLength = index;

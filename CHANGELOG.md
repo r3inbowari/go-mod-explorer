@@ -15,3 +15,11 @@
 [0.1.5]
 
 1. add: support focus explorer
+
+[0.1.6]
+
+1. add: support find in files
+
+[0.1.7]
+
+1. add: support show/hide hostname and version tag
