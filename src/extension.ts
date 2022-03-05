@@ -7,19 +7,20 @@ import ExpanderProvider from "./expander";
 
 const openExplorer = require("open-file-explorer");
 const fs = require("fs");
+let hideDetail = true;
 
 export function activate(context: vscode.ExtensionContext) {
   let bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
   bar.text = "$(loading~spin) Loading Go module explorer";
   bar.show();
   vscode.workspace.workspaceFolders?.forEach((e, index) => {
-    updateTree(e);
+    updateTree(e, hideDetail);
     setTimeout(() => {
       bar.hide();
     }, 3000);
     watch(e.uri.fsPath + "/go.mod", (action, file) => {
       bar.show();
-      updateTree(e);
+      updateTree(e, hideDetail);
       setTimeout(() => {
         bar.hide();
       }, 3000);
@@ -27,13 +28,29 @@ export function activate(context: vscode.ExtensionContext) {
   });
   // vscode.window.showInformationMessage("Go mod attach");
 
+  vscode.commands.registerCommand("gomod.expandPackageDetail", (resource) => {
+    hideDetail = !hideDetail;
+    vscode.workspace.workspaceFolders?.forEach((e, index) => {
+      bar.show();
+      updateTree(e, hideDetail);
+      setTimeout(() => {
+        bar.hide();
+      }, 3000);
+    });
+  });
+
   vscode.commands.registerCommand("gomod.openResource", (resource) =>
     openResource(resource)
   );
   // context.subscriptions.push();
 
   vscode.commands.registerCommand("gomod.findInFiles", (resource) => {
-    findInFiles(resource);
+    // findInFiles(resource);
+
+    vscode.commands.executeCommand(
+      "search.action.openNewEditor",
+      "C:\\Users\\inven\\Desktop\\common\\fs.go"
+    );
   });
 
   vscode.commands.registerCommand("gomod.openByFileExplorer", (resource) =>
@@ -77,7 +94,7 @@ export function deactivate() {}
 
 let d: vscode.TreeView<ModNode>;
 let mt: ModTree;
-function updateTree(e: any) {
+function updateTree(e: any, hide: boolean) {
   exec(
     "cd " + e.uri.fsPath + " && go list -mod=readonly -m -json all",
     function (error, stdout, stderr) {
@@ -87,7 +104,7 @@ function updateTree(e: any) {
         stdout = stdout.trimRight();
         stdout = stdout.substr(0, stdout.length - 1) + "]";
         let dat = JSON.parse(stdout);
-        mt = new ModTree(dat);
+        mt = new ModTree(dat, hide);
         d = vscode.window.createTreeView("gomod", {
           treeDataProvider: mt,
         });
