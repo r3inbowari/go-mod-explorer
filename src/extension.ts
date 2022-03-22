@@ -99,7 +99,7 @@ function updateTree(e: any, hide: boolean) {
     "cd " + e.uri.fsPath + " && go list -mod=readonly -m -json all",
     function (error, stdout, stderr) {
       if (error === null && stderr === "") {
-        stdout = stdout.replace(new RegExp("}", "g"), "},");
+        stdout = stdout.replace(new RegExp("}(,+)?", "g"), "},");
         stdout = stdout.replace("{", "[{");
         stdout = stdout.trimRight();
         stdout = stdout.substr(0, stdout.length - 1) + "]";
