@@ -23,3 +23,8 @@
 [0.1.7]
 
 1. add: support show/hide hostname and version tag
+
+[0.1.8]
+
+1. fix: json parsing error when nested
+2. change: update dependencies
