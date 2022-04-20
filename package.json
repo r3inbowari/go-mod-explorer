@@ -71,10 +71,12 @@
       ],
       "view/item/context": [
         {
-          "command": "gomod.openByFileExplorer"
+          "command": "gomod.openByFileExplorer",
+          "when": "view == gomod"
         },
         {
-          "command": "gomod.findInFiles"
+          "command": "gomod.findInFiles",
+          "when": "view == gomod"
         }
       ]
     },
