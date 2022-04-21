@@ -114,7 +114,7 @@ function updateTree(e: any, hide: boolean) {
 }
 
 function focusGomod() {
-  if (mt.getRootLen() > 0) {
+  if (mt !== undefined && mt.getRootLen() > 0) {
     d.reveal(mt.getRootFirst(), {
       select: true,
       focus: true,
