@@ -10,6 +10,8 @@ const fs = require("fs");
 let hideDetail = true;
 
 export function activate(context: vscode.ExtensionContext) {
+  checkGo();
+
   let bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
   bar.text = "$(loading~spin) Loading Go module explorer";
   bar.show();
@@ -111,6 +113,26 @@ function updateTree(e: any, hide: boolean) {
       }
     }
   );
+}
+
+function checkGo() {
+  let command = "go version";
+  exec(command, (error, stdout, stderr) => {
+    if (error !== null) {
+      vscode.window
+        .showErrorMessage(
+          'The "go" command is not available. Run "go version" on your terminal to check.',
+          "Restart"
+        )
+        .then((selected) => {
+          switch (selected) {
+            case "Restart":
+              vscode.commands.executeCommand("workbench.action.reloadWindow");
+          }
+        });
+    }
+  });
+  return false;
 }
 
 function focusGomod() {
