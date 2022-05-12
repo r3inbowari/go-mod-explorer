@@ -68,6 +68,12 @@ export function queryGoSDK(): ModObject | null {
   let version = arg0?.length === 2 ? arg0[0] : 'unknown';
   let goRoot = arg1?.length === 2 ? arg1[0] : 'unknown';
 
+  // do somethings with linux/max
+  if (process.platform !== 'win32') {
+    version = version.substring(1, version.length - 1);
+    goRoot = goRoot.substring(1, goRoot.length - 1);
+  }
+
   // The version number of a custom build may be unknown
   let gI = version?.indexOf('go');
   if (arg0?.length === 2 && gI !== -1) {
