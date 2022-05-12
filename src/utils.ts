@@ -47,14 +47,16 @@ export function getParentNode(path: string): string {
 
 export function cdGO(): string {
   const workSpaceConfig = workspace.getConfiguration('go');
-  return workSpaceConfig.get('goroot') !== undefined ? `cd ${workSpaceConfig.get('goroot')}\\bin &&` : '';
+  const slash = process.platform === 'win32' ? '\\' : '/';
+  return workSpaceConfig.get('goroot') !== null ? `cd ${workSpaceConfig.get('goroot')}${slash}bin &&` : '';
 }
 
 // if *.get() return an undefined str, a defealt "go" command will be replaced.
 export function queryGoSDK(): ModObject | null {
   let s = '';
+  const exe = process.platform === 'win32' ? 'go.exe env' : 'go env';
   try {
-    s = execSync(cdGO() + 'go.exe env', { encoding: 'utf-8' });
+    s = execSync(cdGO() + exe, { encoding: 'utf-8' });
   } catch (error) {
     return null;
   }
