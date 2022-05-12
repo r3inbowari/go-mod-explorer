@@ -28,3 +28,18 @@
 
 1. fix: json parsing error when nested
 2. change: update dependencies
+
+[0.1.9]
+
+1. fix: redundant items in #15
+2. fix: cannot read properties of undefined (reading 'getRootLen') in #16
+3. add: check go env at first in #17
+
+[0.2.0]
+
+1. chore: code logic optimization
+2. chore: update readme
+3. fix: sometimes the library cannot be loaded
+4. fix: other minor bugs
+5. add: go standard library display support
+6. add: two icons(.svg) from Goland

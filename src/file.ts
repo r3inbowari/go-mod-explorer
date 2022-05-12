@@ -1,15 +1,16 @@
 // see https://github.com/golang/go/blob/fad67f8a5342f4bc309f26f0ae021ce9d21724e6/src/cmd/vendor/golang.org/x/mod/modfile/rule.go#L85
 export interface ModProvider {
-  modFile: ModFile;
+  modFile: ModObject;
 }
 
-export interface ModFile {
+export interface ModObject {
   Dir: string | undefined;
   GoMod: string;
   GoVersion: string;
   Main: boolean;
   Path: string;
   Version: string;
+  SDK: boolean;
 }
 
 // A Go is the go statement.
