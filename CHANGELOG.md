@@ -43,3 +43,12 @@
 4. fix: other minor bugs
 5. add: go standard library display support
 6. add: two icons(.svg) from Goland
+
+[0.2.3]
+
+1. fix: failed to get parent on linux
+2. fix: failed to get go dir on linux
+3. fix: check goroot error on linux
+4. fix: failed to get parent
+5. add: support "Reveal in Explorer View"
+6. chore: update readme
