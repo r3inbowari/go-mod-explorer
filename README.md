@@ -47,7 +47,12 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
     A: Make sure "gomod.revealEnable" is true.
     A: 请确保 "gomod.revealEnable" 处于开启状态。
+    
+---
 
+    Q: Why sometimes reveal doesn't work?
+    A: Limited by the VSCode API, at most three levels of recursion are allowed when revealing.
+    
 ---
 
 I'm appreciate if you could report an issues or pr. (๑•̀ㅂ•́)و✧
