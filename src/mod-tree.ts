@@ -9,16 +9,25 @@ import {
   window,
   TreeView,
   TreeItem,
+  Position,
+  languages,
   workspace,
+  LocationLink,
   EventEmitter,
+  TextDocument,
   ProviderResult,
+  DocumentSelector,
   ExtensionContext,
   TreeDataProvider,
   CancellationToken,
+  DefinitionProvider,
   StatusBarAlignment,
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
+  Definition,
 } from 'vscode';
+
+var path = require('path');
 
 export class ModItem extends TreeItem {
   public isDirectory: boolean = false;
@@ -57,7 +66,7 @@ export class ModItem extends TreeItem {
   }
 }
 
-export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentProvider {
+export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentProvider, DefinitionProvider {
   private _hideHost = true;
   private _rootData: ModItem[] = [];
   private _treeView: TreeView<ModItem> | undefined; // not use outside
@@ -65,9 +74,18 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   private _loadingBar = window.createStatusBarItem(StatusBarAlignment.Left);
   private _goSDK: ModItem | undefined;
   private _context;
+  private _revealTrigger = false;
+  private _revealEnable = true;
 
   constructor(context: ExtensionContext) {
     this._context = context;
+
+    // try to load reveal-sn and reveal-re from setting.json
+    let re: boolean | undefined = workspace.getConfiguration('gomod').get('revealEnable');
+    if (re !== undefined) {
+      this._revealEnable = re;
+    }
+
     this._loadingBar.text = '$(loading~spin) Loading Go Mod Explorer';
     this._loadingBar.show();
 
@@ -149,6 +167,25 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   }
 
   public watch() {
+    if (this._revealEnable) {
+      // golang languages selector
+      let goSelector: DocumentSelector = { scheme: 'file', language: 'go' };
+      // provide function
+      languages.registerDefinitionProvider(goSelector, this);
+      window.onDidChangeActiveTextEditor((e) => {
+        if (e !== undefined && this._revealTrigger) {
+          this._revealTrigger = false;
+          console.log('reveal to:', e.document.fileName);
+
+          this._treeView?.reveal(new ModItem(path.basename(e.document.uri.fsPath), e.document.uri, false), {
+            select: true,
+            focus: true,
+            expand: true,
+          });
+        }
+      });
+    }
+
     // watch the workspaces
     workspace.workspaceFolders?.forEach((e) => {
       watch(e.uri.fsPath + '/go.mod', () => {
@@ -175,10 +212,21 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   }
 
   public getParent(element: ModItem): ModItem | null {
-    if (element.label !== 'root: not found anything') {
-      return element;
+    let parentName = path.basename(path.dirname(element.resourceUri?.path));
+    let parentPathString = path.resolve(element.resourceUri?.fsPath, '..');
+    let parentPathURI = Uri.parse(parentPathString);
+
+    for (let index = 0; index < this._rootData.length; index++) {
+      let ep1 = element.resourceUri?.path;
+      let ep2 = this._rootData[index].resourceUri?.path;
+      if (ep1 === ep2) {
+        return null;
+      }
+      if (parentPathURI.path === this._rootData[index].resourceUri?.path) {
+        return this._rootData[index];
+      }
     }
-    return null;
+    return new ModItem(parentName, Uri.parse(parentPathString), true);
   }
 
   public getChildren(element?: ModItem): ProviderResult<ModItem[]> {
@@ -202,5 +250,14 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
 
   public provideTextDocumentContent(uri: Uri, token: CancellationToken): ProviderResult<string> {
     throw new Error('Method not implemented.3');
+  }
+
+  provideDefinition(
+    document: TextDocument,
+    position: Position,
+    token: CancellationToken
+  ): ProviderResult<Definition | LocationLink[]> {
+    this._revealTrigger = true;
+    return null;
   }
 }

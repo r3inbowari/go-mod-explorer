@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { ModTree } from './mod-tree';
-import { checkGo, openExplorer, openResource } from './utils';
-import ExpanderProvider from './expander';
 import { execSync } from 'child_process';
+import { checkGo, openExplorer, openResource } from './utils';
 
 let mt: ModTree;
 
@@ -13,6 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   mt.watch();
   mt.update();
 
+  // TODO: need fix: delay load after vscode-go
   try {
     execSync('go version');
   } catch {
@@ -38,12 +38,6 @@ export function activate(context: vscode.ExtensionContext) {
     // findInFiles(resource);
     vscode.commands.executeCommand('search.action.openNewEditor', 'C:\\Users\\inven\\Desktop\\common\\fs.go');
   });
-
-  // golang languages selector
-  let goSelector: vscode.DocumentSelector = { scheme: 'file', language: 'go' };
-  // provide function
-  const goProvide = new ExpanderProvider();
-  vscode.languages.registerDefinitionProvider(goSelector, goProvide);
 }
 
 export function deactivate() {}
