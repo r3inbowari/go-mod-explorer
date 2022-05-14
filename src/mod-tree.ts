@@ -216,6 +216,10 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     let parentPathString = path.resolve(element.resourceUri?.fsPath, '..');
     let parentPathURI = Uri.parse(parentPathString);
 
+    if (parentName === '') {
+      return null;
+    }
+
     for (let index = 0; index < this._rootData.length; index++) {
       let ep1 = element.resourceUri?.path;
       let ep2 = this._rootData[index].resourceUri?.path;
