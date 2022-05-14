@@ -42,7 +42,7 @@
 3. fix: sometimes the library cannot be loaded
 4. fix: other minor bugs
 5. add: go standard library display support
-6. add: two icons(.svg) from Goland
+6. add: two icons(.svg) from GoLand
 
 [0.2.3]
 
@@ -52,3 +52,11 @@
 4. fix: failed to get parent
 5. add: support "Reveal in Explorer View"
 6. chore: update readme
+
+[0.2.4]
+
+1. fix: heap overflow by getParents no return
+2. add: one icon(.svg) from GoLand
+3. change: the current it will start with the official extension
+4. update readme
+5. chore: more detail for package.json

@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the External Library for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -52,7 +52,10 @@
       "explorer": [
         {
           "id": "gomod",
-          "name": "GoMod Explorer"
+          "name": "GoMod Explorer",
+          "icon": "resources/package.svg",
+          "contextualTitle": "GoMod Explorer",
+          "when": "go.showExplorer"
         }
       ]
     },
@@ -93,7 +96,18 @@
         "mac": "cmd+shift+'",
         "when": "focusedView == gomod"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Go Mod Explorer",
+      "properties": {
+        "gomod.revealEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic Revael in Go Mod Explorer"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

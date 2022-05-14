@@ -37,6 +37,12 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
     A: Notice that go.goroot has higher priority than system environment in order to be consistent with the official extension.
     A: 需要注意的是，为了与官方插件保持一致， "go.goroot" 的优先级高于系统环境变量.
 
+    Q: Why can't I find GoMod Explorer in VSCode?
+    Q: 为什么在 VSCode 中找不到 GoMod Explorer 这个窗口？
+
+    A: This extension depends on the official extension, please install the go extension at first.
+    A: 此扩展依赖于官方扩展，请先安装 Go 扩展。
+
 ---
 
     Q: How to navigate and reveal to the external code?
