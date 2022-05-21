@@ -136,7 +136,11 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           dat.forEach((res: ModObject, index: number) => {
             if (index !== 0 && res.Dir !== undefined) {
               let item = new ModItem(res, Uri.parse(res.Dir), res.Dir !== undefined);
-              item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module.svg');
+              item.iconPath = Uri.joinPath(
+                this._context.extensionUri,
+                'resources',
+                res.Indirect ? 'module_indirect.svg' : 'module_direct.svg'
+              );
               item.hideHost(this._hideHost);
               this._rootData?.push(item);
             }

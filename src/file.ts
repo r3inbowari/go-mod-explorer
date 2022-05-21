@@ -10,6 +10,7 @@ export interface ModObject {
   Main: boolean;
   Path: string;
   Version: string;
+  Indirect: boolean;
   SDK: boolean;
 }
 
