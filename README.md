@@ -61,5 +61,5 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ---
 
-I'm appreciate if you could report an issues or pr. (๑•̀ㅂ•́)و✧
+I'm appreciate if you could report an issue or pr. (๑•̀ㅂ•́)و✧
 **Enjoy!**

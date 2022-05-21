@@ -133,6 +133,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           if (this._goSDK !== undefined) {
             this._rootData?.push(this._goSDK);
           }
+          let packageList: ModItem[] = [];
           dat.forEach((res: ModObject, index: number) => {
             if (index !== 0 && res.Dir !== undefined) {
               let item = new ModItem(res, Uri.parse(res.Dir), res.Dir !== undefined);
@@ -142,9 +143,16 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
                 res.Indirect ? 'module_indirect.svg' : 'module_direct.svg'
               );
               item.hideHost(this._hideHost);
-              this._rootData?.push(item);
+              packageList.push(item);
             }
           });
+
+          this._rootData = this._rootData.concat(
+            packageList.sort(({ _modObject: l1 }, { _modObject: l2 }) =>
+              l1?.Indirect === l2?.Indirect ? 0 : l1?.Indirect ? 1 : -1
+            )
+          );
+
           this.updateView();
           this._loadingBar.hide();
         }
@@ -240,7 +248,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   public getChildren(element?: ModItem): ProviderResult<ModItem[]> {
     let ret: ModItem[] = [];
     if (element === undefined) {
-      return this._rootData.sort(({ isDirectory: s1 = false }, { isDirectory: s2 = false }) => Number(s2) - Number(s1));
+      return this._rootData;
     } else {
       const result = readdirSync(resolvePath(element.resourceUri!));
       result.forEach((fileName) => {
