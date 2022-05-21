@@ -12,10 +12,10 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ## Keyboard Shortcuts 快捷键:
 
-|                              Description                              |               Keybinding               |
-| :-------------------------------------------------------------------: | :------------------------------------: |
-| Focus the Gomod Explorer. And you can search using keyboard directly. | `Ctrl+Shift+'` or `CMD+Shift+'` on Mac |
-|                Blur and return to the previous focus.                 | `Ctrl+Shift+'` or `CMD+Shift+'` on Mac |
+|                              Description                              |                   Keybinding                    |
+| :-------------------------------------------------------------------: | :---------------------------------------------: |
+| Focus the Gomod Explorer. And you can search using keyboard directly. | `Ctrl + Shift + '` <br> `⌘ + Shift + '` (macOS) |
+|                Blur and return to the previous focus.                 | `Ctrl + Shift + '` <br> `⌘ + Shift + '` (macOS) |
 
 ## Config Settings 配置项
 
@@ -34,7 +34,7 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
     A: Make sure you have installed the go binary, and set the system environment or "go.goroot".
     A: 请确认已经安装 "Go"，并正确设置系统环境变量或 "go.goroot"。
 
-    A: Notice that go.goroot has higher priority than system environment in order to be consistent with the official extension.
+    A: Note that go.goroot has higher priority than system environment in order to be consistent with the official extension.
     A: 需要注意的是，为了与官方插件保持一致， "go.goroot" 的优先级高于系统环境变量.
 
     Q: Why can't I find GoMod Explorer in VSCode?
@@ -53,12 +53,12 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
     A: Make sure "gomod.revealEnable" is true.
     A: 请确保 "gomod.revealEnable" 处于开启状态。
-    
+
 ---
 
     Q: Why sometimes reveal doesn't work?
     A: Limited by the VSCode API, at most three levels of recursion are allowed when revealing.
-    
+
 ---
 
 I'm appreciate if you could report an issues or pr. (๑•̀ㅂ•́)و✧
