@@ -64,5 +64,9 @@
 [0.2.5]
 
 1. add: one icon(.svg) from GoLand
-2. add: classify packages for direct or indirect by icon color
+2. add: classify packages for (in)direct by icon color
 3. chore: fix typos
+
+[0.2.6]
+
+1. add: packages sorting

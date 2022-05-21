@@ -88,6 +88,7 @@ export function queryGoSDK(): ModObject | null {
     Path: '',
     Version: '',
     SDK: true,
+    Indirect: false,
   };
 }
 

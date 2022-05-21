@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   mt.watch();
   mt.update();
 
-  // TODO: need fix: delay load after vscode-go
+  // TODO: need fixed: delay load after vscode-go
   try {
     execSync('go version');
   } catch {
