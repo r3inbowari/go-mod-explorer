@@ -12,6 +12,7 @@ export interface ModObject {
   Version: string;
   Indirect: boolean;
   SDK: boolean;
+  Time: string;
 }
 
 // A Go is the go statement.

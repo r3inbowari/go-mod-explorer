@@ -13,7 +13,7 @@
     "vscode": "^1.62.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
   "activationEvents": [
     "workspaceContains:go.mod"
@@ -34,9 +34,9 @@
         "title": "Find in Files"
       },
       {
-        "command": "gomod.expandPackageDetail",
-        "title": "Show/Hide Hostname and version",
-        "icon": "$(notebook-render-output)"
+        "command": "gomod.collapse",
+        "title": "Collapse Folder in Explorer",
+        "icon": "$(collapse-all)"
       },
       {
         "command": "gomod.focus",
@@ -46,6 +46,11 @@
       {
         "command": "gomod.blur",
         "title": "Blur"
+      },
+      {
+        "command": "gomod.openGoModFile",
+        "title": "Open go.mod File",
+        "icon": "$(preferences-open-settings)"
       }
     ],
     "views": {
@@ -62,7 +67,7 @@
     "menus": {
       "view/title": [
         {
-          "command": "gomod.expandPackageDetail",
+          "command": "gomod.collapse",
           "group": "navigation",
           "when": "view == gomod"
         },
@@ -80,6 +85,11 @@
         {
           "command": "gomod.findInFiles",
           "when": "view == gomod"
+        },
+        {
+          "command": "gomod.openGoModFile",
+          "when": "view == gomod && viewItem == modules",
+          "group": "inline"
         }
       ]
     },
@@ -137,6 +147,8 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "open-file-explorer": "^1.0.2"
+    "chokidar": "^3.5.3",
+    "open-file-explorer": "^1.0.2",
+    "vscode-cache": "^0.3.0"
   }
 }
