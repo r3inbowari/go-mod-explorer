@@ -1,8 +1,11 @@
 import { exec, execSync } from 'child_process';
-import { Uri, workspace, window, commands } from 'vscode';
+import { clear } from 'console';
+import { win32 } from 'path';
+import { Uri, workspace, window, commands, extensions } from 'vscode';
 import { ModObject } from './file';
 
 const fs = require('fs');
+const path = require('path');
 const _openExplorer = require('open-file-explorer');
 
 export function openExplorer(res: any) {
@@ -51,62 +54,46 @@ export function cdGO(): string {
   return workSpaceConfig.get('goroot') !== null ? `cd ${workSpaceConfig.get('goroot')}${slash}bin &&` : '';
 }
 
-// if *.get() return an undefined str, a defealt "go" command will be replaced.
-export function queryGoSDK(): ModObject | null {
-  let s = '';
-  const exe = process.platform === 'win32' ? 'go.exe env' : 'go env';
-  try {
-    s = execSync(cdGO() + exe, { encoding: 'utf-8' });
-  } catch (error) {
-    return null;
-  }
-  let ret: ModObject;
-
-  let arg0 = s.match('(?<=(GOVERSION=)).+');
-  let arg1 = s.match('(?<=(GOROOT=)).+');
-
-  let version = arg0?.length === 2 ? arg0[0] : 'unknown';
-  let goRoot = arg1?.length === 2 ? arg1[0] : 'unknown';
-
-  // do somethings with linux/max
-  if (process.platform !== 'win32') {
-    version = version.substring(1, version.length - 1);
-    goRoot = goRoot.substring(1, goRoot.length - 1);
-  }
-
-  // The version number of a custom build may be unknown
-  let gI = version?.indexOf('go');
-  if (arg0?.length === 2 && gI !== -1) {
-    version = version.substring(gI + 2);
-  }
-
-  return {
-    Dir: goRoot,
-    GoMod: '',
-    GoVersion: version,
-    Main: false,
-    Path: '',
-    Version: '',
-    SDK: true,
-    Indirect: false,
-  };
-}
-
 export function checkGo() {
   let command = cdGO() + 'go version';
   exec(command, (error, stdout, stderr) => {
     if (error !== null) {
-      window
-        .showErrorMessage('The "go" command is not available. Run "go version" on your terminal to check.', 'Restart')
-        .then((selected) => {
-          switch (selected) {
-            case 'Restart':
-              commands.executeCommand('workbench.action.reloadWindow');
-          }
-        });
+      errorRestart('The "go" command is not available. Run "go version" on your terminal to check.');
     }
   });
-  return false;
+}
+
+export function delayLoad(active: Function) {
+  let extGo =
+    extensions.getExtension('golang.go-nightly') !== undefined
+      ? extensions.getExtension('golang.go-nightly')
+      : extensions.getExtension('golang.go');
+
+  if (extGo === undefined) {
+    errorRestart('Extension "Go" not found, please install it from the extension market.');
+  } else {
+    let retries = 60;
+    let t = setInterval(() => {
+      retries--;
+      if (retries < 0) {
+        clearTimeout(t);
+        return;
+      }
+      if (extGo?.isActive) {
+        clearTimeout(t);
+        active();
+      }
+    }, 1000);
+  }
+}
+
+export function errorRestart(msg: string) {
+  window.showErrorMessage(msg, 'Restart').then((selected) => {
+    switch (selected) {
+      case 'Restart':
+        commands.executeCommand('workbench.action.reloadWindow');
+    }
+  });
 }
 
 // ref: https://github.com/microsoft/vscode/blob/4a130c40ed876644ed8af2943809d08221375408/src/vs/workbench/contrib/searchEditor/browser/searchEditorInput.ts#L36
@@ -131,5 +118,18 @@ export function findInFiles(res: any): void {
     focusResults: true,
     filesToExclude: '',
     filesToInclude: p,
+  });
+}
+
+export function walkSync(currentDirPath: any, callback: any) {
+  var fs = require('fs'),
+    path = require('path');
+  fs.readdirSync(currentDirPath, { withFileTypes: true }).forEach(function (dirent: any) {
+    var filePath = path.join(currentDirPath, dirent.name);
+    if (dirent.isFile()) {
+      callback(filePath, dirent);
+    } else if (dirent.isDirectory()) {
+      walkSync(filePath, callback);
+    }
   });
 }
