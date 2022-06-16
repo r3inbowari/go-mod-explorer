@@ -1,4 +1,4 @@
-import { ModItem, ModTree } from './modTree';
+import { ModItem, ModItemType, ModTree } from './modTree';
 import { commands, ExtensionContext, Uri } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
 
@@ -17,9 +17,9 @@ export function activate(context: ExtensionContext) {
     mt.collapse();
   });
   commands.registerCommand('gomod.openResource', (resource) => openResource(resource));
-  commands.registerCommand('gomod.openByFileExplorer', (resource) => openExplorer(resource));
-  commands.registerCommand('gomod.findInFiles', (resource) => {
-    findInFiles(resource);
+  commands.registerCommand('gomod.openInFileExplorer', (resource) => openExplorer(resource));
+  commands.registerCommand('gomod.findInFiles', (resource: ModItem) => {
+    findInFiles(resource.resourceUri);
     // vscode.commands.executeCommand('search.action.openNewEditor', 'C:\\Users\\inven\\Desktop\\common\\fs.go');
   });
   commands.registerCommand('gomod.openGoModFile', (resource: ModItem) => {

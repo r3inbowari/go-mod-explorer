@@ -109,8 +109,11 @@ export function errorRestart(msg: string) {
 //   showIncludesExcludes: boolean;
 //   onlyOpenEditors: boolean;
 // };
-export function findInFiles(res: any): void {
-  let p = resolvePath(res.resource);
+export function findInFiles(res: Uri | undefined): void {
+  if (res === undefined) {
+    return;
+  }
+  let p = resolvePath(res);
   commands.executeCommand('workbench.action.findInFiles', {
     query: '',
     isRegex: true,

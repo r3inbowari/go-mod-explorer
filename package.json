@@ -29,12 +29,13 @@
         "title": "Open Resource"
       },
       {
-        "command": "gomod.openByFileExplorer",
+        "command": "gomod.openInFileExplorer",
         "title": "Reveal in File Explorer"
       },
       {
         "command": "gomod.findInFiles",
-        "title": "Find in Files"
+        "title": "Search these Files",
+        "icon": "$(remote-explorer-documentation)"
       },
       {
         "command": "gomod.focus",
@@ -82,16 +83,27 @@
       ],
       "view/item/context": [
         {
-          "command": "gomod.openByFileExplorer",
-          "when": "view == gomod"
-        },
-        {
-          "command": "gomod.findInFiles",
-          "when": "view == gomod"
+          "command": "gomod.openInFileExplorer",
+          "when": "view == gomod && viewItem != modules"
         },
         {
           "command": "gomod.openGoModFile",
           "when": "view == gomod && viewItem == modules",
+          "group": "inline"
+        },
+        {
+          "command": "gomod.findInFiles",
+          "when": "view == gomod && viewItem == package",
+          "group": "inline"
+        },
+        {
+          "command": "gomod.findInFiles",
+          "when": "view == gomod && viewItem == directory",
+          "group": "inline"
+        },
+        {
+          "command": "gomod.findInFiles",
+          "when": "view == gomod && viewItem == gosdk",
           "group": "inline"
         }
       ]
