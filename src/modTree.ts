@@ -274,7 +274,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         reject('empty parent');
       }
 
-      exec('cd ' + modParentPath + ' && go list -mod=readonly -m -json all', (error, stdout, stderr) => {
+      exec('cd ' + modParentPath + ' && go list -mod=readonly -m -json -e all', (error, stdout, stderr) => {
         if (error === null && stderr === '') {
           // Parsing stdout with modules information to a json.
           // fix: failed to parse replace line. See https://github.com/r3inbowari/go-mod-explorer/issues/10
@@ -456,9 +456,15 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         })
         .on('change', (path: any) => {
           console.log('change:', path);
+          let oldModuleName = _watchMap.get(path);
           this._loadingBar.show();
-          this.update(parseChildURI(folder.uri, path)).then((res) => {
-            _watchMap.set(path, res);
+          this.update(parseChildURI(folder.uri, path)).then((newModuleName) => {
+            _watchMap.set(path, newModuleName);
+
+            if (oldModuleName !== newModuleName && oldModuleName !== undefined) {
+              this._rootMap.delete(oldModuleName);
+              this.updateView();
+            }
           });
           this._loadingBar.hide();
         })
