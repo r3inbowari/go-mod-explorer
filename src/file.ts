@@ -4,14 +4,23 @@ export interface ModProvider {
 }
 
 export interface ModObject {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Dir: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   GoMod: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   GoVersion: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Main: boolean;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Path: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Version: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Indirect: boolean;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   SDK: boolean;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Time: string;
 }
 

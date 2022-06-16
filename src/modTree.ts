@@ -1,9 +1,10 @@
+import { watch } from 'fs';
+import { queryGoSDK } from './api';
 import { ModObject } from './file';
+import { exec } from 'child_process';
 import { readdirSync, statSync } from 'fs';
 import { parseChildURI, resolvePath, getParentNode } from './utils';
-import { queryGoSDK } from './api';
-import { exec } from 'child_process';
-import { watch } from 'fs';
+
 import {
   Uri,
   Event,
@@ -28,10 +29,31 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
-import { read } from 'fs/promises';
 
 var path = require('path');
 
+/**
+ * Type of the ModItem
+ */
+export enum ModItemType {
+  /**
+   * Determines an item as a directory, but the number of items inside the directory is undefined.
+   */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Directory = -1,
+  /**
+   * Determines an item as a file.
+   */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  File = 0,
+}
+
+/**
+ * ModItem can be a modules, a package or a file.
+ *
+ * @param itemType when it is a number type, it means it is a directory and the number
+ * inside the directory is determined. otherwise a {@link ModItemType} type.
+ */
 export class ModItem extends TreeItem {
   public isDirectory: boolean = false;
   public _modObject: ModObject | undefined;
@@ -46,12 +68,9 @@ export class ModItem extends TreeItem {
 
   private _size: number = 0;
 
-  constructor(modObject: ModObject | string | undefined, resource: Uri, isDirectory: boolean, size: number = 0) {
-    super(
-      resource,
-      isDirectory && size !== 0 ? TreeItemCollapsibleState.Collapsed : void TreeItemCollapsibleState.None
-    );
-    this._size = size;
+  constructor(modObject: ModObject | string | undefined, resource: Uri, itemType: ModItemType | number = 0) {
+    super(resource, itemType !== 0 ? TreeItemCollapsibleState.Collapsed : void TreeItemCollapsibleState.None);
+    this._size = itemType;
 
     if (modObject instanceof Object) {
       this._modObject = modObject === undefined ? undefined : modObject;
@@ -68,8 +87,8 @@ export class ModItem extends TreeItem {
     // generate hover content.
     this.createHover();
 
-    this.isDirectory = isDirectory;
-    this.command = isDirectory
+    this.isDirectory = itemType !== 0;
+    this.command = this.isDirectory
       ? void 0
       : {
           command: 'gomod.openResource',
@@ -127,7 +146,7 @@ export class ModItem extends TreeItem {
   /**
    * Hide the hostname and version number of the root folder.
    *
-   * @deprecated No longer supported
+   * @deprecated No longer supported because we removed this feature.
    *
    * @param enable true if we need to hide the details.
    */
@@ -213,7 +232,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     // we should clear the empty lib at first.
     this._goSDK = undefined;
     if (src !== null && src.Dir !== undefined) {
-      this._goSDK = new ModItem(src, parseChildURI(Uri.parse(src.Dir), 'src'), true, -1);
+      this._goSDK = new ModItem(src, parseChildURI(Uri.parse(src.Dir), 'src'), ModItemType.Directory);
       let lbw = `Go SDK`;
       this._goSDK.label = { label: lbw /* ,highlights: [[0, lbw.length]] */ };
       this._goSDK.description = `${this._goSDK._modObject?.GoVersion}`;
@@ -273,7 +292,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       // Init modules list.
       rawModules.forEach((mod: ModObject, index: number) => {
         if (mod.Dir !== undefined) {
-          let item = new ModItem(mod, Uri.parse(mod.Dir), true, readableModulesLength - 1);
+          let item = new ModItem(mod, Uri.parse(mod.Dir), readableModulesLength - 1);
 
           item.iconPath = Uri.joinPath(
             this._context.extensionUri,
@@ -385,7 +404,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           this._revealTrigger = false;
           console.log('reveal to:', e.document.fileName);
 
-          this._treeView?.reveal(new ModItem(path.basename(e.document.uri.fsPath), e.document.uri, false), {
+          this._treeView?.reveal(new ModItem(path.basename(e.document.uri.fsPath), e.document.uri, ModItemType.File), {
             select: true,
             focus: true,
             expand: true,
@@ -469,7 +488,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         }
       }
     }
-    return new ModItem(parentName, Uri.parse(parentPathString), true);
+    return new ModItem(parentName, Uri.parse(parentPathString), ModItemType.Directory);
   }
 
   public getChildren(element?: ModItem): ProviderResult<ModItem[]> {
@@ -486,7 +505,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           new ModItem(
             fileName,
             parseChildURI(element.resourceUri!, fileName),
-            !statSync(element.resourceUri!.path + '/' + fileName).isFile()
+            statSync(element.resourceUri!.path + '/' + fileName).isFile() ? ModItemType.File : ModItemType.Directory
           )
         );
       });

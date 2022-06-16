@@ -23,7 +23,6 @@ export function activate(context: ExtensionContext) {
     // vscode.commands.executeCommand('search.action.openNewEditor', 'C:\\Users\\inven\\Desktop\\common\\fs.go');
   });
   commands.registerCommand('gomod.openGoModFile', (resource: ModItem) => {
-    console.log(resource);
     if (resource._modObject?.GoMod !== undefined) {
       openResource(Uri.parse(resource._modObject.GoMod));
     }
