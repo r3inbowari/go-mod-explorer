@@ -80,8 +80,17 @@ export class ModItem extends TreeItem {
 
       // we will set the version of the module in TreeItem.description.
       this.description = this._modObject?.Version;
+
+      if (!this._modObject?.Main) {
+        this.contextValue = 'package';
+      } else if (this._modObject.SDK) {
+        this.contextValue = 'gosdk';
+      }
     } else {
       this.label = modObject;
+      if (itemType === ModItemType.Directory) {
+        this.contextValue = 'directory';
+      }
     }
 
     // generate hover content.
