@@ -29,8 +29,11 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
+import { resolve } from 'path';
+import { rejects } from 'assert';
 
 var path = require('path');
+const chokidar = require('chokidar');
 
 /**
  * Type of the ModItem
@@ -329,18 +332,21 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     });
   }
 
-  public update(modFile: Uri) {
-    this.loadModules(modFile)
-      .then((rawModulesList) => {
-        this.parseModules(rawModulesList).then((modulesList: any) => {
-          this._rootMap.set(modulesList[0]._modObject!.Path, modulesList);
-          this.updateView();
+  public update(modFile: Uri): Promise<string> {
+    return new Promise((resolve, rejects) => {
+      this.loadModules(modFile)
+        .then((rawModulesList) => {
+          this.parseModules(rawModulesList).then((modulesList: any) => {
+            this._rootMap.set(modulesList[0]._modObject!.Path, modulesList);
+            this.updateView();
+            resolve(modulesList[0]._modObject.Path);
+          });
+        })
+        .catch((err) => {
+          console.log('catch update error: ', err);
+          // TODO: invaild modules tag here.
         });
-      })
-      .catch((err) => {
-        console.log('update error: ', err);
-        // TODO: invaild modules tag here.
-      });
+    });
   }
 
   public updateAll() {
@@ -422,21 +428,50 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       });
     }
 
-    workspace.findFiles('**/go.mod').then((goModFiles) => {
-      goModFiles.forEach((modFile) => {
-        let time: NodeJS.Timeout;
-        watch(modFile.fsPath, () => {
-          if (time !== null) {
-            clearTimeout(time);
-          }
-          time = setTimeout(() => {
-            this._loadingBar.show();
-            console.log('change:', modFile);
-            this.update(modFile);
-            this._loadingBar.hide();
-          }, 500);
-        });
+    // TODO: emit when a new folder add to workspace
+    // workspace.onDidChangeWorkspaceFolders(() => {
+    //   console.log('233');
+    // });
+
+    workspace.workspaceFolders?.forEach((folder) => {
+      console.log('loading:', folder.uri.fsPath);
+
+      // Initialize watcher.
+      const watcher = chokidar.watch('**/go.mod', {
+        ignored: /(^|[\/\\])\../,
+        persistent: true,
+        cwd: folder.uri.fsPath,
       });
+
+      let _watchMap: Map<string, string> = new Map<string, string>();
+      // Add event listeners.
+      watcher
+        .on('add', (path: any) => {
+          console.log('add:', path);
+          this._loadingBar.show();
+          this.update(parseChildURI(folder.uri, path)).then((res) => {
+            _watchMap.set(path, res);
+          });
+          this._loadingBar.hide();
+        })
+        .on('change', (path: any) => {
+          console.log('change:', path);
+          this._loadingBar.show();
+          this.update(parseChildURI(folder.uri, path)).then((res) => {
+            _watchMap.set(path, res);
+          });
+          this._loadingBar.hide();
+        })
+        .on('unlink', (path: any) => {
+          console.log('unlink:', path);
+          this._loadingBar.show();
+          let k1 = _watchMap.get(path);
+          if (k1 !== undefined) {
+            this._rootMap.delete(k1);
+            this.updateView();
+          }
+          this._loadingBar.hide();
+        });
     });
 
     // watch whether goroot has changed in the settings file by user

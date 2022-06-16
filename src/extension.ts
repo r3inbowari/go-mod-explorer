@@ -35,7 +35,7 @@ export function activate(context: ExtensionContext) {
 
     mt = new ModTree(context);
     mt.watch();
-    mt.updateAll();
+    // mt.updateAll();
   });
 }
 
