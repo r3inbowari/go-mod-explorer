@@ -28,6 +28,7 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
+import { read } from 'fs/promises';
 
 var path = require('path');
 
@@ -43,8 +44,14 @@ export class ModItem extends TreeItem {
 
   public _visualParent: string | undefined = undefined;
 
-  constructor(modObject: ModObject | string | undefined, resource: Uri, isDirectory: boolean) {
-    super(resource, isDirectory ? TreeItemCollapsibleState.Collapsed : void TreeItemCollapsibleState.None);
+  private _size: number = 0;
+
+  constructor(modObject: ModObject | string | undefined, resource: Uri, isDirectory: boolean, size: number = 0) {
+    super(
+      resource,
+      isDirectory && size !== 0 ? TreeItemCollapsibleState.Collapsed : void TreeItemCollapsibleState.None
+    );
+    this._size = size;
 
     if (modObject instanceof Object) {
       this._modObject = modObject === undefined ? undefined : modObject;
@@ -88,6 +95,10 @@ export class ModItem extends TreeItem {
           markdownDocumentation.appendMarkdown(
             `$(folder-library) \`${this._modObject!.Path.substring(this._modObject!.Path.indexOf('/') + 1)}\`  \n`
           );
+          if (this._modObject.GoVersion !== undefined) {
+            markdownDocumentation.appendMarkdown(`$(target) \`Go ${this._modObject.GoVersion}\`  \n`);
+          }
+          markdownDocumentation.appendMarkdown(`$(layers-active) \`${this._size} Packages\`  \n`);
         }
       } else {
         markdownDocumentation.appendMarkdown(
@@ -202,7 +213,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     // we should clear the empty lib at first.
     this._goSDK = undefined;
     if (src !== null && src.Dir !== undefined) {
-      this._goSDK = new ModItem(src, parseChildURI(Uri.parse(src.Dir), 'src'), true);
+      this._goSDK = new ModItem(src, parseChildURI(Uri.parse(src.Dir), 'src'), true, -1);
       let lbw = `Go SDK`;
       this._goSDK.label = { label: lbw /* ,highlights: [[0, lbw.length]] */ };
       this._goSDK.description = `${this._goSDK._modObject?.GoVersion}`;
@@ -253,10 +264,16 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   public parseModules(rawModules: ModObject[]): Promise<Array<ModItem>> {
     return new Promise((resolve, reject) => {
       let modulesList: ModItem[] = [];
+      let readableModulesLength = 0;
+      rawModules.forEach((mod: ModObject, index: number) => {
+        if (mod.Dir !== undefined) {
+          readableModulesLength++;
+        }
+      });
       // Init modules list.
       rawModules.forEach((mod: ModObject, index: number) => {
         if (mod.Dir !== undefined) {
-          let item = new ModItem(mod, Uri.parse(mod.Dir), mod.Dir !== undefined);
+          let item = new ModItem(mod, Uri.parse(mod.Dir), true, readableModulesLength - 1);
 
           item.iconPath = Uri.joinPath(
             this._context.extensionUri,
@@ -277,7 +294,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       if (modulesList.length > 0) {
         modulesList[0].description = `<${modulesList[0].label}>`;
         modulesList[0].label = `Go Modules`;
-        // set context value for modules root
+        // set context value for modules root.
         modulesList[0].contextValue = 'modules';
       }
       resolve(modulesList);
