@@ -1,4 +1,3 @@
-import { watch } from 'fs';
 import { queryGoSDK } from './api';
 import { ModObject } from './file';
 import { exec } from 'child_process';
@@ -29,11 +28,10 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
-import { resolve } from 'path';
-import { rejects } from 'assert';
+import { time } from 'console';
 
 var path = require('path');
-const chokidar = require('chokidar');
+var chokidar = require('chokidar');
 
 /**
  * Type of the ModItem
@@ -44,11 +42,16 @@ export enum ModItemType {
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Directory = -1,
+
   /**
    * Determines an item as a file.
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   File = 0,
+
+  /**
+   * Module > 0
+   */
 }
 
 /**
@@ -71,17 +74,20 @@ export class ModItem extends TreeItem {
 
   private _size: number = 0;
 
-  constructor(modObject: ModObject | string | undefined, resource: Uri, itemType: ModItemType | number = 0) {
-    super(resource, itemType !== 0 ? TreeItemCollapsibleState.Collapsed : void TreeItemCollapsibleState.None);
+  constructor(
+    nameOrPackage: ModObject | string | undefined,
+    resource: Uri,
+    itemType: ModItemType | number = ModItemType.File
+  ) {
+    super(resource, itemType === ModItemType.File ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Collapsed);
     this._size = itemType;
 
-    if (modObject instanceof Object) {
-      this._modObject = modObject === undefined ? undefined : modObject;
-
+    if (nameOrPackage instanceof Object) {
+      this._modObject = nameOrPackage === undefined ? undefined : nameOrPackage;
       // we infer it is a root.
       this._isRoot = true;
 
-      // we will set the version of the module in TreeItem.description.
+      // set the version of the module in TreeItem.description.
       this.description = this._modObject?.Version;
 
       if (!this._modObject?.Main) {
@@ -90,7 +96,7 @@ export class ModItem extends TreeItem {
         this.contextValue = 'gosdk';
       }
     } else {
-      this.label = modObject;
+      this.label = nameOrPackage;
       if (itemType === ModItemType.Directory) {
         this.contextValue = 'directory';
       }
@@ -99,7 +105,7 @@ export class ModItem extends TreeItem {
     // generate hover content.
     this.createHover();
 
-    this.isDirectory = itemType !== 0;
+    this.isDirectory = itemType !== ModItemType.File;
     this.command = this.isDirectory
       ? void 0
       : {
@@ -483,9 +489,13 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     // watch whether goroot has changed in the settings file by user
     workspace.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration('go')) {
-        let gsdk = queryGoSDK();
-        this.setGoSDK(gsdk);
-        this.updateAll();
+        // TODO: need fix
+        setTimeout(() => {
+          let gsdk = queryGoSDK();
+          this.setGoSDK(gsdk);
+          // this.updateAll();
+          this.updateView();
+        }, 3000);
       }
     });
   }
@@ -564,7 +574,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   }
 
   public provideTextDocumentContent(uri: Uri, token: CancellationToken): ProviderResult<string> {
-    throw new Error('Method not implemented.3');
+    throw new Error('Method not implemented: provideTextDocumentContent');
   }
 
   provideDefinition(

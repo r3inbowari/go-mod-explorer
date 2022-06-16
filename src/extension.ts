@@ -1,4 +1,4 @@
-import { ModItem, ModItemType, ModTree } from './modTree';
+import { ModItem, ModTree } from './modTree';
 import { commands, ExtensionContext, Uri } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
 
