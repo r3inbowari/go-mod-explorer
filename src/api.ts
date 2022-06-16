@@ -59,5 +59,7 @@ export function queryGoSDK(): ModObject | null {
     SDK: true,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Indirect: false,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Time: '',
   };
 }
