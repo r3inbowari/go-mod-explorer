@@ -8,7 +8,7 @@ Vscode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ## it looks like:
 
-![img](https://user-images.githubusercontent.com/30739857/168066123-9eb7fdc4-ec35-492b-8bee-9e1f270dc5dc.png)
+![image](https://user-images.githubusercontent.com/30739857/174079982-dfce53c1-2b17-4e8e-b88c-248c461b1699.png)
 
 ## Keyboard Shortcuts 快捷键:
 
