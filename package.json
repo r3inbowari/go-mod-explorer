@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the External Library for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -16,7 +16,10 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "workspaceContains:go.mod"
+    "workspaceContains:*.go",
+    "workspaceContains:*/*.go",
+    "workspaceContains:*/*/*.go",
+    "onLanguage:go"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -34,14 +37,14 @@
         "title": "Find in Files"
       },
       {
-        "command": "gomod.collapse",
-        "title": "Collapse Folder in Explorer",
-        "icon": "$(collapse-all)"
-      },
-      {
         "command": "gomod.focus",
         "title": "Focus and search",
         "icon": "$(search-view-icon)"
+      },
+      {
+        "command": "gomod.collapse",
+        "title": "Collapse Folder in Explorer",
+        "icon": "$(collapse-all)"
       },
       {
         "command": "gomod.blur",
@@ -67,12 +70,12 @@
     "menus": {
       "view/title": [
         {
-          "command": "gomod.collapse",
+          "command": "gomod.focus",
           "group": "navigation",
           "when": "view == gomod"
         },
         {
-          "command": "gomod.focus",
+          "command": "gomod.collapse",
           "group": "navigation",
           "when": "view == gomod"
         }
