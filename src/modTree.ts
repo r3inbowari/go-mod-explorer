@@ -28,7 +28,6 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
-import { time } from 'console';
 
 var path = require('path');
 var chokidar = require('chokidar');
