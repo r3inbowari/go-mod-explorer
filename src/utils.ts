@@ -1,12 +1,8 @@
-import { exec, execSync } from 'child_process';
-import { clear } from 'console';
-import { win32 } from 'path';
+import { exec } from 'child_process';
 import { Uri, workspace, window, commands, extensions } from 'vscode';
-import { ModObject } from './file';
 
-const fs = require('fs');
-const path = require('path');
-const _openExplorer = require('open-file-explorer');
+var fs = require('fs');
+var _openExplorer = require('open-file-explorer');
 
 export function openExplorer(res: any) {
   let p = resolvePath(res.resourceUri);

@@ -1,5 +1,5 @@
 import { ModObject } from './file';
-import { exec, execSync } from 'child_process';
+import { execSync } from 'child_process';
 
 /**
  * The execution path of query depends on the goroot set by go ext.
