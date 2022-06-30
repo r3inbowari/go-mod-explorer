@@ -153,7 +153,7 @@ export class ModItem extends TreeItem {
           `$(globe) \`${this._modObject!.Path.substring(0, this._modObject!.Path.indexOf('/'))}\`  \n`
         );
         markdownDocumentation.appendMarkdown(
-          `  \n$(remote-explorer-documentation) [See Document](https://${this._modObject.Path})  \n`
+          `  \n$(remote-explorer-documentation) [See Document](https://pkg.go.dev/mod/${this._modObject.Path})  \n`
         );
       }
       this.tooltip = markdownDocumentation;
