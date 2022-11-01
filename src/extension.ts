@@ -1,6 +1,7 @@
 import { ModItem, ModTree } from './modTree';
 import { commands, ExtensionContext, Uri } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
+import { goModTidy } from './api';
 
 let mt: ModTree;
 
@@ -25,6 +26,16 @@ export function activate(context: ExtensionContext) {
     if (resource._modObject?.GoMod !== undefined) {
       openResource(Uri.parse(resource._modObject.GoMod));
     }
+  });
+
+  commands.registerCommand('gomod.execGoModTidy', (mod: ModItem) => {
+    goModTidy(mod._modObject?.Dir, mod._modObject?.Path)
+      .then((msg) => {
+        console.log(msg);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
   });
 
   // We need to wait for Extension "Go or Go-Nightly" to

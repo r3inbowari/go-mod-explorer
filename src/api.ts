@@ -1,5 +1,43 @@
 import { ModObject } from './file';
 import { execSync } from 'child_process';
+import { window, StatusBarAlignment } from 'vscode';
+import { time } from 'console';
+import { OutgoingMessage } from 'http';
+
+/**
+ * Execute `go mod tidy` command on the target module.
+ *
+ * *Note* Tidy may trigger explorer view update.
+ *
+ * @param path the root path of dst(go.mod) file
+ *
+ * @returns The result about the `go mod tidy`.
+ */
+export function goModTidy(path: string | undefined, name: string | undefined): Promise<string> {
+  let _tidyStatus = window.createStatusBarItem(StatusBarAlignment.Left);
+  _tidyStatus.text = '$(loading~spin) Go Mod Tidy: ' + (name === undefined ? 'error moudule' : name);
+  _tidyStatus.show();
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (path === undefined) {
+        _tidyStatus.hide();
+        return reject('command execution failed with undefined path');
+      }
+      const commandStr = 'cd ' + path + ' && go mod tidy';
+
+      let s = '';
+      try {
+        s = execSync(commandStr, { encoding: 'utf-8' });
+        _tidyStatus.hide();
+        resolve('tidy done: ' + path);
+      } catch (error) {
+        _tidyStatus.hide();
+        return reject('command execution failed: ' + s);
+      }
+    }, 200);
+  });
+}
 
 /**
  * The execution path of query depends on the goroot set by go ext.

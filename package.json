@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the external libraries for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -34,7 +34,7 @@
       },
       {
         "command": "gomod.findInFiles",
-        "title": "Search these Files",
+        "title": "Find in Files",
         "icon": "$(remote-explorer-documentation)"
       },
       {
@@ -55,6 +55,11 @@
         "command": "gomod.openGoModFile",
         "title": "Open go.mod File",
         "icon": "$(preferences-open-settings)"
+      },
+      {
+        "command": "gomod.execGoModTidy",
+        "title": "Tidy (beta)",
+        "icon": "$(sort-precedence)"
       }
     ],
     "views": {
@@ -88,6 +93,11 @@
         },
         {
           "command": "gomod.openGoModFile",
+          "when": "view == gomod && viewItem == modules",
+          "group": "inline"
+        },
+        {
+          "command": "gomod.execGoModTidy",
           "when": "view == gomod && viewItem == modules",
           "group": "inline"
         },
