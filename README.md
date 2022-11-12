@@ -1,6 +1,6 @@
 # Go Mod Explorer README
 
-Displays the external libraries for the current go project in the Explorer.  
+Displays the external libraries for the current go project in the Explorer.
 
 Github: https://github.com/r3inbowari/go-mod-explorer  
 VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer
@@ -9,21 +9,21 @@ VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ![image](https://user-images.githubusercontent.com/30739857/174079982-dfce53c1-2b17-4e8e-b88c-248c461b1699.png)
 
-## Shortcuts:  
+## Shortcuts:
 
-|                          Description                       |       Keybinding       |
-| :--------------------------------------------------------: | :--------------------: |
-|       Focus the Gomod Explorer.(package name search)       | `Ctrl(⌘) + Shift + '` |
-|             Blur and back to the previous focus.           | `Ctrl(⌘) + Shift + '` |
+|                  Description                   |      Keybinding       |
+| :--------------------------------------------: | :-------------------: |
+| Focus the Gomod Explorer.(package name search) | `Ctrl(⌘) + Shift + '` |
+|      Blur and back to the previous focus.      | `Ctrl(⌘) + Shift + '` |
 
-## Settings:  
+## Settings:
 
-|         Name         |   Type    |  Default  |            Description           |
-| :------------------: | :-------: | :-------: | :------------------------------: |
-|     `go.goroot`      | `String`  | undefined | Custom installation directory.   |
-| `gomod.revealEnable` | `Boolean` |   true    | Enable auto reveal.              |
+|         Name         |   Type    |  Default  |          Description           |
+| :------------------: | :-------: | :-------: | :----------------------------: |
+|     `go.goroot`      | `String`  | undefined | Custom installation directory. |
+| `gomod.revealEnable` | `Boolean` |   true    |      Enable auto reveal.       |
 
-## Q&A:  
+## Q&A:
 
 ---
 
@@ -46,6 +46,17 @@ VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
     A: Limited by the VSCode API, at most three levels of recursion are allowed when revealing.
 
 ---
+
+## Credits
+
+- [golang/vscode-go](https://github.com/golang/vscode-go)
+- [jetbrains/goland](https://www.jetbrains.com/go/)
+
+## License
+
+This software is released under the MIT license.
+
+## Contribute
 
 I'm appreciate if you could report an issue or pr. (๑•̀ㅂ•́)و✧
 **Enjoy!**
