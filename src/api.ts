@@ -58,6 +58,8 @@ export function queryGoSDK(): ModObject | null {
 
   let arg0 = s.match('(?<=(GOVERSION=)).+');
   let arg1 = s.match('(?<=(GOROOT=)).+');
+  let arg2 = s.match('(?<=(GOARCH=)).+');
+  let arg3 = s.match('(?<=(GOHOSTOS=)).+');
 
   // sub the "" for environment values on linux/mac
   // the version of a custom build may be unknown
@@ -75,12 +77,30 @@ export function queryGoSDK(): ModObject | null {
         : arg1[0].substring(1, arg1[0].length - 1)
       : 'unknown';
 
+  let arch =
+    arg2?.length === 2
+      ? process.platform === 'win32'
+        ? arg2[0]
+        : arg2[0].substring(1, arg2[0].length - 1)
+      : 'unknown';
+
+  let platform =
+    arg3?.length === 2
+      ? process.platform === 'win32'
+        ? arg3[0]
+        : arg3[0].substring(1, arg3[0].length - 1)
+      : 'unknown';
+
   let gI = version?.indexOf('go');
   if (gI !== -1) {
     version = version.substring(gI + 2);
   }
 
   return {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Arch: arch,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Platform: platform,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Dir: goRoot,
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -99,5 +119,7 @@ export function queryGoSDK(): ModObject | null {
     Indirect: false,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Time: '',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Replace: undefined,
   };
 }

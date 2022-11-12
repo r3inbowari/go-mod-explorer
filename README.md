@@ -5,25 +5,25 @@ Displays the external libraries for the current go project in the Explorer.
 Github: https://github.com/r3inbowari/go-mod-explorer  
 VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer
 
-## it looks like:
+## it looks like
 
 ![image](https://user-images.githubusercontent.com/30739857/174079982-dfce53c1-2b17-4e8e-b88c-248c461b1699.png)
 
-## Shortcuts:
+## Shortcuts
 
 |                  Description                   |      Keybinding       |
 | :--------------------------------------------: | :-------------------: |
 | Focus the Gomod Explorer.(package name search) | `Ctrl(⌘) + Shift + '` |
 |      Blur and back to the previous focus.      | `Ctrl(⌘) + Shift + '` |
 
-## Settings:
+## Settings
 
 |         Name         |   Type    |  Default  |          Description           |
 | :------------------: | :-------: | :-------: | :----------------------------: |
 |     `go.goroot`      | `String`  | undefined | Custom installation directory. |
 | `gomod.revealEnable` | `Boolean` |   true    |      Enable auto reveal.       |
 
-## Q&A:
+## Q&A
 
 ---
 
@@ -54,9 +54,9 @@ VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ## License
 
-This software is released under the MIT license.
+This software is released under the [MIT](https://github.com/r3inbowari/go-mod-explorer/blob/main/LICENSE) license.
 
-## Contribute
+## Contributing
 
 I'm appreciate if you could report an issue or pr. (๑•̀ㅂ•́)و✧
 **Enjoy!**

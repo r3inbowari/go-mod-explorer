@@ -5,6 +5,10 @@ export interface ModProvider {
 
 export interface ModObject {
   // eslint-disable-next-line @typescript-eslint/naming-convention
+  Arch: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Platform: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   Dir: string | undefined;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   GoMod: string;
@@ -22,6 +26,8 @@ export interface ModObject {
   SDK: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Time: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Replace: ModObject | undefined;
 }
 
 // A Go is the go statement.
