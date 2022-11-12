@@ -1,72 +1,92 @@
 # Change Log
 
 [0.1.0]
-
-1. basic function realization
-
-[0.1.1]
-
-1. fix: load error path on linux/mac
+basic function realization.
 
 [0.1.1]
+fix: load error path on linux/mac.
 
-1. add: support open by file explorer
+[0.1.1]
+add: support open by file explorer.
 
 [0.1.5]
-
-1. add: support focus explorer
+add: support focus explorer.
 
 [0.1.6]
-
-1. add: support find in files
+add: support find in files.
 
 [0.1.7]
-
-1. add: support show/hide hostname and version tag
+add: support show/hide hostname and version tag.
 
 [0.1.8]
-
-1. fix: json parsing error when nested
-2. change: update dependencies
+fix: json parsing error when nested.
+change: update dependencies.
 
 [0.1.9]
-
-1. fix: redundant items in #15
-2. fix: cannot read properties of undefined (reading 'getRootLen') in #16
-3. add: check go env at first in #17
+fix: redundant items in #15.
+fix: cannot read properties of undefined (reading 'getRootLen') in #16.
+add: check go env at first in #17.
 
 [0.2.0]
-
-1. chore: code logic optimization
-2. chore: update readme
-3. fix: sometimes the library cannot be loaded
-4. fix: other minor bugs
-5. add: go standard library display support
-6. add: two icons(.svg) from GoLand
+chore: code logic optimization.
+chore: update readme.
+fix: sometimes the library cannot be loaded.
+fix: other minor bugs.
+add: go standard library display support.
+add: two icons(.svg) from GoLand.
 
 [0.2.3]
-
-1. fix: failed to get parent on linux
-2. fix: failed to get go dir on linux
-3. fix: check goroot error on linux
-4. fix: failed to get parent
-5. add: support "Reveal in Explorer View"
-6. chore: update readme
+fix: failed to get parent on linux.
+fix: failed to get go dir on linux.
+fix: check goroot error on linux.
+fix: failed to get parent.
+add: support "Reveal in Explorer View".
+chore: update readme.
 
 [0.2.4]
-
-1. fix: heap overflow by getParents no return
-2. add: one icon(.svg) from GoLand
-3. change: the current it will start with the official extension
-4. update readme
-5. chore: more detail for package.json
+fix: heap overflow by getParents no return.
+add: one icon(.svg) from GoLand.
+change: the current it will start with the official extension.
+update readme.
+chore: more detail for package.json.
 
 [0.2.5]
-
-1. add: one icon(.svg) from GoLand
-2. add: classify packages for (in)direct by icon color
-3. chore: fix typos
+add: one icon(.svg) from GoLand.
+add: classify packages for (in)direct by icon color.
+chore: fix typos.
 
 [0.2.6]
+add: packages sorting.
 
-1. add: packages sorting
+[0.3.0]
+This patch is come from #32.
+
+support: multiple go.mod file.
+support: goto go.mod file.
+support: hover display.
+support: collapse all.
+support: load dynamically for multiple go.mod files.
+remove: hide hostname option.
+add find in files inline button.
+fix: sometime it can't load anytings.
+fix: probability of abnormal go envs.
+fix: wrong start timing
+fix: expanded an empty modules.
+fix: load error go exec, when switch to a new go path.
+fix: find in files not work. remove: find in files menu context.
+chore: add some code comments.
+chore: typos fix.
+chore: update readme.
+change: no longer catch the err package when loading modules.
+change: the moditem api has been change.
+
+[0.3.4]
+This patch is base on #33, #34, #36, #37 and #39.
+
+chore: update readme and add an additional LICENCE from JetBrains s.r.o.
+support: replaced packages indicator (The version tag still shows the original).
+add: button for go mod tidy.
+add: hover display with arch info.
+change: new extension icon.
+fix: link to documents with trusted domain.
+fix: The explorer will not be updated when modifying the "go.mod" file and then use "go get" (strict order).

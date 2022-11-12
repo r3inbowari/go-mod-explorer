@@ -125,6 +125,9 @@ export class ModItem extends TreeItem {
           markdownDocumentation.appendMarkdown(`$(package) \`golang/go\`  \n`);
           markdownDocumentation.appendMarkdown(`$(versions) \`${this._modObject.GoVersion}\`  \n`);
           markdownDocumentation.appendMarkdown(
+            `$(symbol-event) \`${this._modObject.Platform}\` \`${this._modObject.Arch}\`  \n`
+          );
+          markdownDocumentation.appendMarkdown(
             `  \n$(remote-explorer-documentation) [See Document](https://go.dev/doc/)  \n`
           );
         } else {
@@ -140,7 +143,16 @@ export class ModItem extends TreeItem {
         markdownDocumentation.appendMarkdown(
           `$(package) \`${this._modObject!.Path.substring(this._modObject!.Path.indexOf('/') + 1)}\`  \n`
         );
-        markdownDocumentation.appendMarkdown(`$(versions) \`${this._modObject.Version}\`  \n`);
+
+        if (this._modObject.Replace !== undefined) {
+          markdownDocumentation.appendMarkdown(`$(arrow-circle-down) \`${this._modObject.Path}\`  \n`);
+          markdownDocumentation.appendMarkdown(
+            `$(versions) \`${this._modObject.Version}\` $(arrow-small-right) \`${this._modObject.Replace.Version}\`  \n`
+          );
+        } else {
+          markdownDocumentation.appendMarkdown(`$(versions) \`${this._modObject.Version}\`  \n`);
+        }
+
         if (this._modObject.GoVersion !== undefined) {
           markdownDocumentation.appendMarkdown(`$(target) \`Go ${this._modObject.GoVersion}\`  \n`);
         }
@@ -317,6 +329,10 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
             index !== 0 ? (mod.Indirect ? 'module_indirect.svg' : 'module_direct.svg') : 'module_group.svg'
           );
 
+          if (item._modObject !== undefined && item._modObject.Replace !== undefined) {
+            item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_replace.svg');
+          }
+
           item.hideHost(this._hideHost);
           modulesList.push(item);
         }
@@ -442,7 +458,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       console.log('loading:', folder.uri.fsPath);
 
       // Initialize watcher.
-      const watcher = chokidar.watch('**/go.mod', {
+      const watcher = chokidar.watch(['**/go.mod', '**/go.sum'], {
         ignored: /(^|[\/\\])\../,
         persistent: true,
         cwd: folder.uri.fsPath,
