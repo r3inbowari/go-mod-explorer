@@ -1,5 +1,5 @@
 import { ModItem, ModTree } from './modTree';
-import { commands, ExtensionContext, Uri } from 'vscode';
+import { commands, ExtensionContext, Uri, window, ViewColumn } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
 import { goModTidy } from './api';
 
