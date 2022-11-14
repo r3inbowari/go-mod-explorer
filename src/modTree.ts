@@ -8,6 +8,7 @@ import {
   Uri,
   Event,
   window,
+  commands,
   TreeView,
   TreeItem,
   Position,
@@ -191,7 +192,6 @@ export class ModItem extends TreeItem {
 }
 
 export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentProvider, DefinitionProvider {
-  private _hideHost = true;
   private _rootData: ModItem[] = [];
   private _treeView: TreeView<ModItem> | undefined; // not use outside.
 
@@ -333,7 +333,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
             item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_replace.svg');
           }
 
-          item.hideHost(this._hideHost);
+          item.hideHost(true);
           modulesList.push(item);
         }
       });
@@ -402,8 +402,10 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
    * Collapse the tree.
    *
    * See https://github.com/microsoft/vscode/issues/44746
+   * See Main Thread https://github.com/microsoft/vscode/issues/55879
    * See https://github.com/microsoft/vscode/issues/78970
    * See https://github.com/microsoft/vscode/issues/92176
+   *
    * Comment from #44746: Setting collapsibleState property is for initial state and
    * cannot override the user state. But if you want to programatically reveal an item,
    * there is an api coming in here - #30288
@@ -412,18 +414,12 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
    * the tree view may be not collapsed. So we need to add an invisible token to the
    * front of the label content ('\r' is a good choice) in order to make collapse work.
    *
+   * We call workbench.actions.treeView.[viewID which setting on package.json views attrs].collapseAll to collapse All item
+   *
    * @update 2022/06/16
    */
   public collapse() {
-    this._hideHost = !this._hideHost;
-    if (this._goSDK !== undefined) {
-      this._goSDK.label = (this._hideHost ? '' : '\r') + 'Go SDK';
-    }
-    this._rootMap.forEach((mods: ModItem[], modulesName: string) => {
-      mods[0].label = (this._hideHost ? '' : '\r') + 'Go Modules';
-    });
-
-    this.updateView();
+    commands.executeCommand('workbench.actions.treeView.gomod.collapseAll');
   }
 
   // TODO: save work states

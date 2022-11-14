@@ -58,5 +58,6 @@ This software is released under the [MIT](https://github.com/r3inbowari/go-mod-e
 
 ## Contributing
 
+See the [Quickstart Guide](https://github.com/r3inbowari/go-mod-explorer/blob/main/vsc-extension-quickstart.md) for more information.
 I'm appreciate if you could report an issue or pr. (๑•̀ㅂ•́)و✧
 **Enjoy!**
