@@ -414,7 +414,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
    * the tree view may be not collapsed. So we need to add an invisible token to the
    * front of the label content ('\r' is a good choice) in order to make collapse work.
    *
-   * We call workbench.actions.treeView.[viewID which setting on package.json views attrs].collapseAll to collapse All item
+   * We call workbench.actions.treeView.[viewID which setting on package.json views attrs].collapseAll to collapse All items
    *
    * @update 2022/06/16
    */

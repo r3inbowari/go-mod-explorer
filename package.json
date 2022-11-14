@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the external libraries for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -39,8 +39,7 @@
       },
       {
         "command": "gomod.focus",
-        "title": "Focus and search",
-        "icon": "$(search-view-icon)"
+        "title": "Focus"
       },
       {
         "command": "gomod.collapse",
@@ -75,11 +74,6 @@
     },
     "menus": {
       "view/title": [
-        {
-          "command": "gomod.focus",
-          "group": "navigation",
-          "when": "view == gomod"
-        },
         {
           "command": "gomod.collapse",
           "group": "navigation",
