@@ -148,7 +148,11 @@ export class ModItem extends TreeItem {
         if (this._modObject.Replace !== undefined) {
           markdownDocumentation.appendMarkdown(`$(arrow-circle-down) \`${this._modObject.Path}\`  \n`);
           markdownDocumentation.appendMarkdown(
-            `$(versions) \`${this._modObject.Version}\` $(arrow-small-right) \`${this._modObject.Replace.Version}\`  \n`
+            `$(versions) \`${this._modObject.Version}\` $(arrow-small-right) \`${
+              this._modObject.Replace.Version === undefined
+                ? this._modObject.Replace.Path
+                : this._modObject.Replace.Version
+            }\`  \n`
           );
         } else {
           markdownDocumentation.appendMarkdown(`$(versions) \`${this._modObject.Version}\`  \n`);
