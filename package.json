@@ -25,6 +25,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "gomod.market",
+        "title": "Open Go Package Market (wip)",
+        "icon": "$(test-view-icon)"
+      },
+      {
         "command": "gomod.openResource",
         "title": "Open Resource"
       },
@@ -76,6 +81,11 @@
       "view/title": [
         {
           "command": "gomod.collapse",
+          "group": "navigation",
+          "when": "view == gomod"
+        },
+        {
+          "command": "gomod.market",
           "group": "navigation",
           "when": "view == gomod"
         }
