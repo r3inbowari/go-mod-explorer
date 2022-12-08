@@ -295,7 +295,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         reject('empty parent');
       }
 
-      exec('cd ' + modParentPath + ' && go list -mod=readonly -m -json -e all', (error, stdout, stderr) => {
+      exec('go list -mod=readonly -m -json -e all', { cwd: modParentPath }, (error, stdout, stderr) => {
         if (error === null && stderr === '') {
           // Parsing stdout with modules information to a json.
           // fix: failed to parse replace line. See https://github.com/r3inbowari/go-mod-explorer/issues/10

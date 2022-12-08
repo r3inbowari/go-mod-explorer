@@ -24,11 +24,11 @@ export function goModTidy(path: string | undefined, name: string | undefined): P
         _tidyStatus.hide();
         return reject('command execution failed with undefined path');
       }
-      const commandStr = 'cd ' + path + ' && go mod tidy';
+      const commandStr = 'go mod tidy';
 
       let s = '';
       try {
-        s = execSync(commandStr, { encoding: 'utf-8' });
+        s = execSync(commandStr, { encoding: 'utf-8', cwd: path });
         _tidyStatus.hide();
         resolve('tidy done: ' + path);
       } catch (error) {
