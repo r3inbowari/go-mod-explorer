@@ -224,7 +224,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   /**
    * true if we enable the code reveal.
    */
-  private _revealEnable = true;
+  private _autoReveal = true;
 
   /**
    * true if "go to definition" is triggered, and it will be reset
@@ -235,10 +235,10 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   constructor(context: ExtensionContext) {
     this._context = context;
 
-    // try to load revealEnable from settings.json.
-    let revealEnable: boolean | undefined = workspace.getConfiguration('gomod').get('revealEnable');
-    if (revealEnable !== undefined) {
-      this._revealEnable = revealEnable;
+    // try to load autoReveal from settings.json.
+    let autoReveal: boolean | undefined = workspace.getConfiguration('gomod').get('autoReveal');
+    if (autoReveal !== undefined) {
+      this._autoReveal = autoReveal;
     }
 
     this._loadingBar.text = '$(loading~spin) Loading Go Mod Explorer';
@@ -430,7 +430,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   // ref: https://github.com/flawiddsouza/favorite-folders/blob/79f643042fd65c1bad41d52d3eba946975be967a/src/extension.ts
 
   public watch() {
-    if (this._revealEnable) {
+    if (this._autoReveal) {
       // golang languages selector
       let goSelector: DocumentSelector = { scheme: 'file', language: 'go' };
       // provide function

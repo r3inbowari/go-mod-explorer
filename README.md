@@ -2,8 +2,8 @@
 
 Displays the external libraries for the current go project in the Explorer.
 
-Github: https://github.com/r3inbowari/go-mod-explorer  
-VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer
+[Github](https://github.com/r3inbowari/go-mod-explorer)  
+[VS Code Market](https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer)
 
 ## it looks like
 
@@ -18,10 +18,10 @@ VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
 ## Settings
 
-|         Name         |   Type    |  Default  |          Description           |
-| :------------------: | :-------: | :-------: | :----------------------------: |
-|     `go.goroot`      | `String`  | undefined | Custom installation directory. |
-| `gomod.revealEnable` | `Boolean` |   true    |      Enable auto reveal.       |
+|        Name        |   Type    |  Default  |          Description           |
+| :----------------: | :-------: | :-------: | :----------------------------: |
+|    `go.goroot`     | `String`  | undefined | Custom installation directory. |
+| `gomod.autoReveal` | `Boolean` |   true    |      Enable auto reveal.       |
 
 ## Q&A
 
@@ -38,7 +38,7 @@ VSCode Market: https://marketplace.visualstudio.com/items?itemName=r3inbowari.go
 
     Q: How to navigate(reveal) to the external code?
     A: Make sure you have installed the official extension "vscode-go".
-    A: Make sure "gomod.revealEnable" is true.
+    A: Make sure "gomod.autoReveal" is true.
 
 ---
 
