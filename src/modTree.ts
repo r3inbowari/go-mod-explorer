@@ -580,7 +580,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           new ModItem(
             fileName,
             parseChildURI(element.resourceUri!, fileName),
-            statSync(parseChildURI(element.resourceUri!, fileName).toString(true)).isFile() ? ModItemType.File : ModItemType.Directory
+            statSync(element.resourceUri!.path + '/' + fileName).isFile() ? ModItemType.File : ModItemType.Directory
           )
         );
       });
