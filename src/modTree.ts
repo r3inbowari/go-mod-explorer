@@ -2,6 +2,7 @@ import { queryGoSDK } from './api';
 import { ModObject } from './file';
 import { exec } from 'child_process';
 import { readdirSync, statSync } from 'fs';
+import { join } from "path";
 import { parseChildURI, resolvePath, getParentNode } from './utils';
 
 import {
@@ -574,13 +575,14 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     if (element._modObject !== undefined && this._rootMap.has(element._modObject.Path)) {
       return this._rootMap.get(element._modObject.Path)?.slice(1);
     } else {
-      const result = readdirSync(resolvePath(element.resourceUri!));
+      const dirPath = resolvePath(element.resourceUri!);
+      const result = readdirSync(dirPath);
       result.forEach((fileName) => {
         ret.push(
           new ModItem(
             fileName,
             parseChildURI(element.resourceUri!, fileName),
-            statSync(element.resourceUri!.path + '/' + fileName).isFile() ? ModItemType.File : ModItemType.Directory
+            statSync(join(dirPath, fileName)).isFile() ? ModItemType.File : ModItemType.Directory
           )
         );
       });
