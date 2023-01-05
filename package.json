@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the external libraries for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.3.6",
+  "version": "0.3.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -24,6 +24,11 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "gomod.market",
+        "title": "Open Go Package Market (wip)",
+        "icon": "$(test-view-icon)"
+      },
       {
         "command": "gomod.openResource",
         "title": "Open Resource"
@@ -78,6 +83,11 @@
           "command": "gomod.collapse",
           "group": "navigation",
           "when": "view == gomod"
+        },
+        {
+          "command": "gomod.market",
+          "group": "navigation",
+          "when": "view == gomod"
         }
       ],
       "view/item/context": [
@@ -130,7 +140,7 @@
       "type": "object",
       "title": "Go Mod Explorer",
       "properties": {
-        "gomod.revealEnable": {
+        "gomod.autoReveal": {
           "type": "boolean",
           "default": true,
           "description": "Enable automatic Revael in Go Mod Explorer"

@@ -2,6 +2,7 @@ import { queryGoSDK } from './api';
 import { ModObject } from './file';
 import { exec } from 'child_process';
 import { readdirSync, statSync } from 'fs';
+import { join } from "path";
 import { parseChildURI, resolvePath, getParentNode } from './utils';
 
 import {
@@ -224,7 +225,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   /**
    * true if we enable the code reveal.
    */
-  private _revealEnable = true;
+  private _autoReveal = true;
 
   /**
    * true if "go to definition" is triggered, and it will be reset
@@ -235,10 +236,10 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   constructor(context: ExtensionContext) {
     this._context = context;
 
-    // try to load revealEnable from settings.json.
-    let revealEnable: boolean | undefined = workspace.getConfiguration('gomod').get('revealEnable');
-    if (revealEnable !== undefined) {
-      this._revealEnable = revealEnable;
+    // try to load autoReveal from settings.json.
+    let autoReveal: boolean | undefined = workspace.getConfiguration('gomod').get('autoReveal');
+    if (autoReveal !== undefined) {
+      this._autoReveal = autoReveal;
     }
 
     this._loadingBar.text = '$(loading~spin) Loading Go Mod Explorer';
@@ -295,7 +296,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         reject('empty parent');
       }
 
-      exec('cd ' + modParentPath + ' && go list -mod=readonly -m -json -e all', (error, stdout, stderr) => {
+      exec('go list -mod=readonly -m -json -e all', { cwd: modParentPath }, (error, stdout, stderr) => {
         if (error === null && stderr === '') {
           // Parsing stdout with modules information to a json.
           // fix: failed to parse replace line. See https://github.com/r3inbowari/go-mod-explorer/issues/10
@@ -430,7 +431,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   // ref: https://github.com/flawiddsouza/favorite-folders/blob/79f643042fd65c1bad41d52d3eba946975be967a/src/extension.ts
 
   public watch() {
-    if (this._revealEnable) {
+    if (this._autoReveal) {
       // golang languages selector
       let goSelector: DocumentSelector = { scheme: 'file', language: 'go' };
       // provide function
@@ -574,13 +575,14 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     if (element._modObject !== undefined && this._rootMap.has(element._modObject.Path)) {
       return this._rootMap.get(element._modObject.Path)?.slice(1);
     } else {
-      const result = readdirSync(resolvePath(element.resourceUri!));
+      const dirPath = resolvePath(element.resourceUri!);
+      const result = readdirSync(dirPath);
       result.forEach((fileName) => {
         ret.push(
           new ModItem(
             fileName,
             parseChildURI(element.resourceUri!, fileName),
-            statSync(element.resourceUri!.path + '/' + fileName).isFile() ? ModItemType.File : ModItemType.Directory
+            statSync(join(dirPath, fileName)).isFile() ? ModItemType.File : ModItemType.Directory
           )
         );
       });

@@ -2,10 +2,39 @@ import { ModItem, ModTree } from './modTree';
 import { commands, ExtensionContext, Uri, window, ViewColumn } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
 import { goModTidy } from './api';
+import * as path from 'path';
 
 let mt: ModTree;
 
 export function activate(context: ExtensionContext) {
+  commands.registerCommand('gomod.market', () => {
+    const panel = window.createWebviewPanel('GoPM', 'Go Packages Market', ViewColumn.One, {
+      enableScripts: true,
+      localResourceRoots: [Uri.file(path.join(context.extensionPath, 'dist'))],
+    });
+    const onDiskPath = Uri.file(path.join(context.extensionPath, 'dist', 'assets/index.css'));
+    const onDiskPath1 = Uri.file(path.join(context.extensionPath, 'dist', 'assets/index.js'));
+    const cssPath = panel.webview.asWebviewUri(onDiskPath);
+    const jsPath = panel.webview.asWebviewUri(onDiskPath1);
+
+    panel.webview.html = getWebviewContent(jsPath, cssPath);
+
+    setTimeout(() => {
+      panel.webview.postMessage({ command: 'refactor' });
+    }, 10000);
+
+    panel.webview.onDidReceiveMessage(
+      (message) => {
+        switch (message.command) {
+          case 0:
+            window.showErrorMessage(message.payload);
+            return;
+        }
+      },
+      undefined,
+      context.subscriptions
+    );
+  });
   // focus to gomod explorer
   commands.registerCommand('gomod.focus', () => {
     mt.focus();
@@ -49,3 +78,25 @@ export function activate(context: ExtensionContext) {
 }
 
 export function deactivate() {}
+
+function getWebviewContent(js: Uri, css: Uri) {
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <link
+        rel="icon"
+        type="image"
+        href="https://pkg.go.dev/static/shared/icon/favicon.ico"
+      />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Go Packages</title>
+      <script type="module" crossorigin src="${js}"></script>
+      <link rel="stylesheet" href="${css}">
+    </head>
+    <body>
+      <div id="app"></div>
+    </body>
+  </html>
+  `;
+}
