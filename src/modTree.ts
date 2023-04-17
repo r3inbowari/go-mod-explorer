@@ -2,7 +2,7 @@ import { queryGoSDK } from './api';
 import { ModObject } from './file';
 import { exec } from 'child_process';
 import { readdirSync, statSync } from 'fs';
-import { join } from "path";
+import { join } from 'path';
 import { parseChildURI, resolvePath, getParentNode } from './utils';
 
 import {
@@ -300,13 +300,14 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
         if (error === null && stderr === '') {
           // Parsing stdout with modules information to a json.
           // fix: failed to parse replace line. See https://github.com/r3inbowari/go-mod-explorer/issues/10
-          stdout = stdout.replace(new RegExp('}(,+)?', 'g'), '},');
-          stdout = stdout.replace('{', '[{');
-          stdout = stdout.trimRight();
-          stdout = stdout.substring(0, stdout.length - 1) + ']';
-          let rawModulesData: ModObject[] = JSON.parse(stdout);
-
-          resolve(rawModulesData);
+          stdout = stdout.replace(new RegExp('}\n{', 'g'), '},{');
+          stdout = '[' + stdout + ']';
+          try {
+            let rawModulesData: ModObject[] = JSON.parse(stdout);
+            resolve(rawModulesData);
+          } catch (err) {
+            reject(err + ', raw: ' + stdout);
+          }
         } else {
           reject(error);
         }
@@ -369,7 +370,8 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           });
         })
         .catch((err) => {
-          console.log('catch update error: ', err);
+          console.log('Please include the full error below here in your issue, thanks!');
+          console.log('catch load modules, err:', err);
           // TODO: invaild modules tag here.
         });
     });
