@@ -1,0 +1,1 @@
+This is an independent work folder and doesn't have any external references
