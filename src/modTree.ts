@@ -66,8 +66,7 @@ export class ModItem extends TreeItem {
   public _modObject: ModObject | undefined;
 
   /**
-   * _isRoot indicates that the ModItem (current path) is the root directory of a module.
-   * true if ModItem is the root of a module.
+   * @param _isRoot indicates that the ModItem (current path) is the root directory of a module.
    */
   public _isRoot: boolean = false;
 
@@ -324,25 +323,31 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
           readableModulesLength++;
         }
       });
-      // Init modules list.
-      rawModules.forEach((mod: ModObject, index: number) => {
-        if (mod.Dir !== undefined) {
-          let item = new ModItem(mod, Uri.parse(mod.Dir), readableModulesLength - 1);
+      // add root module with icon 'module_group.svg'
+      if (rawModules.length > 0 && rawModules[0].Dir !== undefined) {
+        let item = new ModItem(rawModules[0], Uri.parse(rawModules[0].Dir), readableModulesLength - 1);
+        item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_group.svg');
+        item.hideHost(true);
+        modulesList.push(item);
+      }
 
-          item.iconPath = Uri.joinPath(
-            this._context.extensionUri,
-            'resources',
-            index !== 0 ? (mod.Indirect ? 'module_indirect.svg' : 'module_direct.svg') : 'module_group.svg'
-          );
-
-          if (item._modObject !== undefined && item._modObject.Replace !== undefined) {
-            item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_replace.svg');
+      for (let index = 1; index < rawModules.length; index++) {
+        if (rawModules[index].Dir !== undefined) {
+          let item = new ModItem(rawModules[index], Uri.parse(rawModules[index].Dir), readableModulesLength - 1);
+          if (rawModules[index].Main) {
+            item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_work.svg');
+          } else {
+            item.iconPath = Uri.joinPath(
+              this._context.extensionUri,
+              'resources',
+              rawModules[index].Indirect ? 'module_indirect.svg' : 'module_direct.svg'
+            );
           }
-
           item.hideHost(true);
           modulesList.push(item);
         }
-      });
+      }
+
       // Sort the modules according to (in)direct with alphabetical order.
       // And not sort the first module.
       modulesList.sort(({ _modObject: m0 }, { _modObject: m1 }) =>
