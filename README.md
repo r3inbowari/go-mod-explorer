@@ -10,26 +10,26 @@ A vscode extension of Go Module Explorer. Link to [GitHub](https://github.com/r3
 
 ## Symbols
 
-|                                                       Icon                                                       |      Description      |
-|:----------------------------------------------------------------------------------------------------------------:|:---------------------:|
-|     <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_group.svg">     |     Module Group      | 
-| <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_group_invaild.svg"> | Invalid Package Group | 
-|    <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_direct.svg">     |     Direct Module     | 
-|   <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_indirect.svg">    |    Indirect Module    | 
-|    <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_replace.svg">    |    Replaced Module    |
-|     <img src="https://raw.githubusercontent.com/r3inbowari/go-mod-explorer/main/resources/module_work.svg">      |      Work Module      | 
+|                                                     Icon                                                     |      Description      |
+|:------------------------------------------------------------------------------------------------------------:|:---------------------:|
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/92393547-6234-4151-b768-2c2f4e43a405) |     Module Group      | 
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/9835d941-e29b-4551-ab0c-ef87a0b71e88) | Invalid Package Group | 
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/7347eb36-5383-4d53-b674-e817892c14cd) |     Direct Module     | 
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/ee9fbae5-d0b6-4ee9-84cc-19bc85db3a2a) |    Indirect Module    | 
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8e8778c3-2cfb-436f-9549-089ffba6ae5b) |    Replaced Module    |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8502217b-effe-4a5b-b905-943ce9d7cdde) |      Work Module      | 
 
 ## Shortcuts
 
 |                  Description                   |     Keybinding      |
-| :--------------------------------------------: | :-----------------: |
+|:----------------------------------------------:|:-------------------:|
 | Focus the Gomod Explorer.(package name search) | Ctrl(⌘) + Shift + ' |
 |      Blur and back to the previous focus.      | Ctrl(⌘) + Shift + ' |
 
 ## Settings
 
-|       Name       |  Type   |  Default  |          Description           |
-| :--------------: | :-----: | :-------: | :----------------------------: |
+|       Name       |   Type  |  Default  |          Description           |
+|:----------------:|:-------:|:---------:|:------------------------------:|
 |    go.goroot     | String  | undefined | Custom installation directory. |
 | gomod.autoReveal | Boolean |   true    |      Enable auto reveal.       |
 
