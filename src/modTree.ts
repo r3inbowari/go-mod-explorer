@@ -30,6 +30,7 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
+import { count } from 'console';
 
 var path = require('path');
 var chokidar = require('chokidar');
@@ -73,6 +74,8 @@ export class ModItem extends TreeItem {
   public _visualParent: string | undefined = undefined;
 
   private _size: number = 0;
+
+  public _isWorkspace: boolean = false;
 
   constructor(
     nameOrPackage: ModObject | string | undefined,
@@ -178,13 +181,10 @@ export class ModItem extends TreeItem {
   }
 
   /**
-   * Hide the hostname and version number of the root folder.
-   *
-   * @deprecated No longer supported because we removed this feature.
-   *
+   * Update root title.
    * @param enable true if we need to hide the details.
    */
-  public hideHost(enable: boolean) {
+  public updateTitle(enable: boolean) {
     if (!this._modObject || this._modObject.SDK) {
       return;
     }
@@ -318,23 +318,31 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     return new Promise((resolve, reject) => {
       let modulesList: ModItem[] = [];
       let readableModulesLength = 0;
+      // If countMainModules > 1, we treat the module group to be a go work group.
+      // ref: https://github.com/r3inbowari/go-mod-explorer/issues/38
+      let countMainModules = 0;
       rawModules.forEach((mod: ModObject, index: number) => {
         if (mod.Dir !== undefined) {
           readableModulesLength++;
         }
       });
-      // add root module with icon 'module_group.svg'
+
+      // Add root module with icon 'module_group.svg'.
       if (rawModules.length > 0 && rawModules[0].Dir !== undefined) {
+        countMainModules++;
         let item = new ModItem(rawModules[0], Uri.parse(rawModules[0].Dir), readableModulesLength - 1);
         item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_group.svg');
-        item.hideHost(true);
+        // set context value for modules root.
+        item.contextValue = 'modules';
         modulesList.push(item);
       }
 
+      // Add modules with icon 'module_work.svg', 'module_indirect.svg' or 'module_direct.svg'.
       for (let index = 1; index < rawModules.length; index++) {
         if (rawModules[index].Dir !== undefined) {
           let item = new ModItem(rawModules[index], Uri.parse(rawModules[index].Dir), readableModulesLength - 1);
           if (rawModules[index].Main) {
+            countMainModules++;
             item.iconPath = Uri.joinPath(this._context.extensionUri, 'resources', 'module_work.svg');
           } else {
             item.iconPath = Uri.joinPath(
@@ -343,7 +351,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
               rawModules[index].Indirect ? 'module_indirect.svg' : 'module_direct.svg'
             );
           }
-          item.hideHost(true);
+          item.updateTitle(true);
           modulesList.push(item);
         }
       }
@@ -353,13 +361,15 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       modulesList.sort(({ _modObject: m0 }, { _modObject: m1 }) =>
         m0?.Indirect === m1?.Indirect ? 0 : m0?.Indirect ? 1 : -1
       );
-
-      if (modulesList.length > 0) {
-        modulesList[0].description = `<${modulesList[0].label}>`;
+      // Finally, determine whether it is a go work group and update title.
+      if (countMainModules > 1) {
+        modulesList[0]._isWorkspace = true;
+        modulesList[0].label = `Go Workspace`;
+      } else {
         modulesList[0].label = `Go Modules`;
-        // set context value for modules root.
-        modulesList[0].contextValue = 'modules';
       }
+      modulesList[0].description = `<${modulesList[0].label}>`;
+      modulesList[0].updateTitle(true);
       resolve(modulesList);
     });
   }
