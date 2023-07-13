@@ -1,7 +1,7 @@
 {
   "name": "gomodexplorer",
   "displayName": "Go Mod Explorer",
-  "description": "Displays the external libraries for the current go project in the Explorer.",
+  "description": "A vscode extension of Go Module Explorer",
   "publisher": "r3inbowari",
   "version": "0.3.11",
   "repository": {
