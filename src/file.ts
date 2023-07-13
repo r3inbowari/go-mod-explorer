@@ -9,7 +9,7 @@ export interface ModObject {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Platform: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  Dir: string | undefined;
+  Dir: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   GoMod: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention

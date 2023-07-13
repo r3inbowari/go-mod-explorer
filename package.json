@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "Displays the external libraries for the current go project in the Explorer.",
   "publisher": "r3inbowari",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
