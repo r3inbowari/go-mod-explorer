@@ -59,9 +59,13 @@ export function activate(context: ExtensionContext) {
 
   // ref: https://github.com/microsoft/vscode/blob/e95fca143d86caba79d31565ecdd5aae1a0600f9/src/vs/platform/actions/common/actions.ts
   // @link MenuId.EditorTitleContext
-  commands.registerCommand('gomod.showActiveFileInExplorer', () => {
+  commands.registerCommand('gomod.showActiveFileInExplorer', (resource: Uri) => {
     if (window.activeTextEditor !== undefined && mt !== undefined) {
-      mt.actionReveal2(window.activeTextEditor.document);
+      if (resource !== undefined) {
+        mt.actionReveal2(resource);
+      } else {
+        mt.actionReveal2(window.activeTextEditor.document.uri);
+      }
     }
   });
   commands.registerCommand('gomod.execGoModTidy', (mod: ModItem) => {

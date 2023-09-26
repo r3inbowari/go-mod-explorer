@@ -456,9 +456,9 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   // ref: https://github.com/flawiddsouza/favorite-folders/blob/79f643042fd65c1bad41d52d3eba946975be967a/src/extension.ts
 
   // ref: #61
-  public actionReveal2(doc: TextDocument) {
-    console.log('reveal to:', path);
-    this._treeView?.reveal(new ModItem(path.basename(doc.uri.fsPath), doc.uri, ModItemType.File), {
+  public actionReveal2(uri: Uri) {
+    console.log('reveal to:', uri);
+    this._treeView?.reveal(new ModItem(path.basename(uri.fsPath), uri, ModItemType.File), {
       select: true,
       focus: this._focusMode,
       expand: true,
@@ -474,7 +474,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       window.onDidChangeActiveTextEditor((e) => {
         if (e !== undefined && this._revealTrigger) {
           this._revealTrigger = false;
-          this.actionReveal2(e.document);
+          this.actionReveal2(e.document.uri);
         }
       });
     }

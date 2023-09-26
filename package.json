@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "A vscode extension of Go Module Explorer",
   "publisher": "r3inbowari",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
