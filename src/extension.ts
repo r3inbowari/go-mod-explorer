@@ -1,5 +1,5 @@
 import { ModItem, ModTree } from './modTree';
-import { commands, ExtensionContext, Uri, window, ViewColumn } from 'vscode';
+import { commands, ExtensionContext, Uri, window, ViewColumn, TextEdit } from 'vscode';
 import { checkGo, openExplorer, openResource, findInFiles, delayLoad } from './utils';
 import { goModTidy } from './api';
 import * as path from 'path';
@@ -57,6 +57,13 @@ export function activate(context: ExtensionContext) {
     }
   });
 
+  // ref: https://github.com/microsoft/vscode/blob/e95fca143d86caba79d31565ecdd5aae1a0600f9/src/vs/platform/actions/common/actions.ts
+  // @link MenuId.EditorTitleContext
+  commands.registerCommand('gomod.showActiveFileInExplorer', () => {
+    if (window.activeTextEditor !== undefined && mt !== undefined) {
+      mt.actionReveal2(window.activeTextEditor.document);
+    }
+  });
   commands.registerCommand('gomod.execGoModTidy', (mod: ModItem) => {
     goModTidy(mod._modObject?.Dir, mod._modObject?.Path)
       .then((msg) => {

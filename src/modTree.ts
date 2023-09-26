@@ -30,7 +30,6 @@ import {
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
 } from 'vscode';
-import { count } from 'console';
 
 var path = require('path');
 var chokidar = require('chokidar');
@@ -227,6 +226,11 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   private _autoReveal = true;
 
   /**
+   * true if we enable the code reveal while focusing. (default: true)
+   */
+  private _focusMode = true;
+
+  /**
    * true if "go to definition" is triggered, and it will be reset
    * to false when code reveal is complete.
    */
@@ -237,8 +241,12 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
 
     // try to load autoReveal from settings.json.
     let autoReveal: boolean | undefined = workspace.getConfiguration('gomod').get('autoReveal');
+    let focusMode: boolean | undefined = workspace.getConfiguration('gomod').get('focusMode');
     if (autoReveal !== undefined) {
       this._autoReveal = autoReveal;
+    }
+    if (focusMode !== undefined) {
+      this._focusMode = focusMode;
     }
 
     this._loadingBar.text = '$(loading~spin) Loading Go Mod Explorer';
@@ -447,6 +455,16 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   // TODO: save work states
   // ref: https://github.com/flawiddsouza/favorite-folders/blob/79f643042fd65c1bad41d52d3eba946975be967a/src/extension.ts
 
+  // ref: #61
+  public actionReveal2(doc: TextDocument) {
+    console.log('reveal to:', path);
+    this._treeView?.reveal(new ModItem(path.basename(doc.uri.fsPath), doc.uri, ModItemType.File), {
+      select: true,
+      focus: this._focusMode,
+      expand: true,
+    });
+  }
+
   public watch() {
     if (this._autoReveal) {
       // golang languages selector
@@ -456,13 +474,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
       window.onDidChangeActiveTextEditor((e) => {
         if (e !== undefined && this._revealTrigger) {
           this._revealTrigger = false;
-          console.log('reveal to:', e.document.fileName);
-
-          this._treeView?.reveal(new ModItem(path.basename(e.document.uri.fsPath), e.document.uri, ModItemType.File), {
-            select: true,
-            focus: true,
-            expand: true,
-          });
+          this.actionReveal2(e.document);
         }
       });
     }
