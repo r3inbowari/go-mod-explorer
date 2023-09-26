@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "A vscode extension of Go Module Explorer",
   "publisher": "r3inbowari",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -64,6 +64,10 @@
         "command": "gomod.execGoModTidy",
         "title": "Tidy (beta)",
         "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "gomod.showActiveFileInExplorer",
+        "title": "Reveal in Go Mod Explorer"
       }
     ],
     "views": {
@@ -78,6 +82,11 @@
       ]
     },
     "menus": {
+      "editor/title/context": [
+        {
+          "command": "gomod.showActiveFileInExplorer"
+        }
+      ],
       "view/title": [
         {
           "command": "gomod.collapse",
@@ -123,6 +132,16 @@
       ]
     },
     "keybindings": [
+      {
+        "command": "gomod.collapse",
+        "key": "shift+ctrl+.",
+        "mac": "cmd+shift+."
+      },
+      {
+        "command": "gomod.showActiveFileInExplorer",
+        "key": "shift+ctrl+/",
+        "mac": "cmd+shift+/"
+      },
       {
         "command": "gomod.focus",
         "key": "ctrl+shift+'",

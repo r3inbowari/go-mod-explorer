@@ -1,8 +1,11 @@
 # Go Mod Explorer
 
-A vscode extension of Go Module Explorer. Link to [GitHub](https://github.com/r3inbowari/go-mod-explorer) |
-[VS Code Market](https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer) |
-[Open VSX](https://open-vsx.org/extension/r3inbowari/gomodexplorer)
+[![Market](https://img.shields.io/badge/source-Github-8A2BE3)](https://github.com/r3inbowari/go-mod-explorer)
+[![Release](https://img.shields.io/github/v/release/r3inbowari/go-mod-explorer)](https://github.com/r3inbowari/go-mod-explorer/releases)
+[![Market](https://img.shields.io/badge/marketplace-VS%20Code-0D67B5)](https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer)
+[![Market](https://img.shields.io/badge/registry-Open%20VSX-C060EC)](https://open-vsx.org/extension/r3inbowari/gomodexplorer)
+
+A VSCode extension of Go Module Explorer.
 
 ## it looks like
 
@@ -10,28 +13,37 @@ A vscode extension of Go Module Explorer. Link to [GitHub](https://github.com/r3
 
 ## Symbols
 
-|                                                     Icon                                                     |      Description      |
-|:------------------------------------------------------------------------------------------------------------:|:---------------------:|
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/92393547-6234-4151-b768-2c2f4e43a405) |     Module Group      | 
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/9835d941-e29b-4551-ab0c-ef87a0b71e88) | Invalid Package Group | 
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/7347eb36-5383-4d53-b674-e817892c14cd) |     Direct Module     | 
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/ee9fbae5-d0b6-4ee9-84cc-19bc85db3a2a) |    Indirect Module    | 
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8e8778c3-2cfb-436f-9549-089ffba6ae5b) |    Replaced Module    |
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8502217b-effe-4a5b-b905-943ce9d7cdde) |      Work Module      | 
+|                                                     Icon                                                     |     Description      |
+| :----------------------------------------------------------------------------------------------------------: | :------------------: |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/92393547-6234-4151-b768-2c2f4e43a405) |     Module Group     |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/9835d941-e29b-4551-ab0c-ef87a0b71e88) | Invalid Module Group |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/7347eb36-5383-4d53-b674-e817892c14cd) |    Direct Module     |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/ee9fbae5-d0b6-4ee9-84cc-19bc85db3a2a) |   Indirect Module    |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8e8778c3-2cfb-436f-9549-089ffba6ae5b) |   Replaced Module    |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8502217b-effe-4a5b-b905-943ce9d7cdde) |     Work Module      |
 
 ## Shortcuts
 
-|                  Description                   |     Keybinding      |
-|:----------------------------------------------:|:-------------------:|
-| Focus the Gomod Explorer.(package name search) | Ctrl(⌘) + Shift + ' |
-|      Blur and back to the previous focus.      | Ctrl(⌘) + Shift + ' |
+|                   Description                   |     Keybinding      |
+| :---------------------------------------------: | :-----------------: |
+| Focus the Go Mod Explorer.(package name search) | Ctrl(⌘) + Shift + ' |
+|      Blur and back to the previous focus.       | Ctrl(⌘) + Shift + ' |
+|   Reveal the current activate in the Editor.    | Ctrl(⌘) + Shift + / |
+|         Quick Collapse Go Mod Explorer.         | Ctrl(⌘) + Shift + . |
 
 ## Settings
 
-|       Name       |   Type  |  Default  |          Description           |
-|:----------------:|:-------:|:---------:|:------------------------------:|
+|       Name       |  Type   |  Default  |          Description           |
+| :--------------: | :-----: | :-------: | :----------------------------: |
 |    go.goroot     | String  | undefined | Custom installation directory. |
 | gomod.autoReveal | Boolean |   true    |      Enable auto reveal.       |
+| gomod.focusMode  | Boolean |   true    |     Reveal while focusing.     |
+
+## Other
+
+### Reveal the current activate in the Editor using your Mouse
+
+![How to reveal](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/fa8f83bd-ad9d-436f-8807-1bdf4cb7b649)
 
 ## Q&A
 
@@ -44,11 +56,13 @@ A vscode extension of Go Module Explorer. Link to [GitHub](https://github.com/r3
     Q: Why GoMod Explorer not showing in VSCode?
     A: This extension depends on the official extension, please install the "vscode-go" at first.
     A: "gopls" is also needed, You can download it by "vscode-go". For more details, please refer to the tutorial of "vscode-go".
+
 ---
 
     Q: How to navigate(reveal) to the external code?
     A: Make sure you have installed the official extension "vscode-go".
     A: Make sure "gomod.autoReveal" is true.
+
 ---
 
     Q: Why sometimes reveal doesn't work?
