@@ -90,3 +90,19 @@ add: hover display with arch info.
 change: new extension icon.
 fix: link to documents with trusted domain.
 fix: The explorer will not be updated when modifying the "go.mod" file and then use "go get" (strict order).
+
+[0.3.10]
+fix: scheme missing when open Go SDK in win32
+fix: typos fix
+fix: use exec option to change pwd
+fix: replace local packages with showing undefined
+change: discard search button
+fix: collapse display with an exception symbol
+chore: vsce cli update
+support: replace packages indicator and fix bugs
+
+[0.3.11]
+feat: support go work title with GO Workspace #38 #55
+feat: support gowork module with marking icon #38 #55
+chore: update dependencies
+chore: update README.md
