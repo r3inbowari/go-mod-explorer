@@ -77,6 +77,8 @@ export function delayLoad(active: Function) {
       }
       if (extGo?.isActive) {
         clearTimeout(t);
+        // set Go Mod Explorer is running
+        commands.executeCommand('setContext', 'gomod.running', true);
         active();
       }
     }, 1000);

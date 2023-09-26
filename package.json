@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "A vscode extension of Go Module Explorer",
   "publisher": "r3inbowari",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -84,7 +84,8 @@
     "menus": {
       "editor/title/context": [
         {
-          "command": "gomod.showActiveFileInExplorer"
+          "command": "gomod.showActiveFileInExplorer",
+          "when": "gomod.running"
         }
       ],
       "view/title": [
@@ -135,24 +136,26 @@
       {
         "command": "gomod.collapse",
         "key": "shift+ctrl+.",
-        "mac": "cmd+shift+."
+        "mac": "cmd+shift+.",
+        "when": "gomod.running"
       },
       {
         "command": "gomod.showActiveFileInExplorer",
         "key": "shift+ctrl+/",
-        "mac": "cmd+shift+/"
+        "mac": "cmd+shift+/",
+        "when": "gomod.running"
       },
       {
         "command": "gomod.focus",
         "key": "ctrl+shift+'",
         "mac": "cmd+shift+'",
-        "when": "focusedView != gomod"
+        "when": "focusedView != gomod && gomod.running"
       },
       {
         "command": "gomod.blur",
         "key": "ctrl+shift+'",
         "mac": "cmd+shift+'",
-        "when": "focusedView == gomod"
+        "when": "focusedView == gomod && gomod.running"
       }
     ],
     "configuration": {
