@@ -112,3 +112,12 @@ feat: add new function `actionReveal2` #61
 feat: shortcut quick collapse.  
 feat: shortcut Reveal the current activate in the Editor.  
 feat: configuration `gomod.focusMode` allow user reveal without focusing.
+
+[0.3.13]
+fix: reveal error caused by missing target.
+
+[0.3.14]
+fix: missing conf gomod.focusMode.
+
+[0.3.15]
+chore: refine shortcuts rules.
