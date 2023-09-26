@@ -3,7 +3,7 @@
   "displayName": "Go Mod Explorer",
   "description": "A vscode extension of Go Module Explorer",
   "publisher": "r3inbowari",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -162,7 +162,12 @@
         "gomod.autoReveal": {
           "type": "boolean",
           "default": true,
-          "description": "Enable automatic Revael in Go Mod Explorer"
+          "description": "Enable automatic Revael in Go Mod Explorer."
+        },
+        "gomod.focusMode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Reveal while focusing."
         }
       }
     }
