@@ -5,11 +5,11 @@
 [![Market](https://img.shields.io/badge/marketplace-VS%20Code-0D67B5)](https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer)
 [![Market](https://img.shields.io/badge/eclipse-Open%20VSX-C060EC)](https://open-vsx.org/extension/r3inbowari/gomodexplorer)
 
-This extension adds a pretty UI for Go Module on VSCode, mainly including:
+This extension adds a pretty Go Module Explorer for Visual Studio Code, mainly including:
 
 - External Dependency Viewer
 - Automatic Code Reveal
-- Go Workspace
+- Go Workspace Support
 
 ## it looks like
 
@@ -47,17 +47,17 @@ This extension adds a pretty UI for Go Module on VSCode, mainly including:
 
 ### Reveal the specified file in the Editor with your Mouse (Ctrl(⌘) + Shift + / ).
 
-![How to reveal with your mouse](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/fa8f83bd-ad9d-436f-8807-1bdf4cb7b649)
+![How to reveal with your mouse](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/c7cf73e2-4dc2-4be0-9282-504541f3001e)
 
 ## Q&A
 
 ---
 
-    Q: Why is there nothing in GoMod Explorer?
+    Q: Why is there nothing in Go Mod Explorer?
     A: Make sure you have installed the Go Binary, and set the system environment or "go.goroot".
     A: Note that go.goroot has higher priority than system environment in order to be consistent with the official extension.
 
-    Q: Why GoMod Explorer not showing in VSCode?
+    Q: Why Go Mod Explorer not showing in Visual Studio Code?
     A: This extension depends on the official extension, please install the "vscode-go" at first.
     A: "gopls" is also needed, You can download it by "vscode-go". For more details, please refer to the tutorial of "vscode-go".
 
@@ -70,14 +70,12 @@ This extension adds a pretty UI for Go Module on VSCode, mainly including:
 ---
 
     Q: Why sometimes reveal doesn't work?
-    A: Limited by the VSCode API, at most three levels of recursion are allowed when revealing.
-
----
+    A: Limited by the Visual Studio Code API, at most three levels of recursion are allowed when revealing.
 
 ---
 
     Q: How to avoid focusing the Go Mod Explorer when revealing?
-    A: Go to the Settings of VSCode and set gomod.focusMode to false.
+    A: Go to the Settings of Visual Studio Code and set gomod.focusMode to false.
 
 ---
 
