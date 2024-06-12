@@ -1,9 +1,9 @@
 {
   "name": "gomodexplorer",
   "displayName": "Go Mod Explorer",
-  "description": "A vscode extension of Go Module Explorer",
+  "description": "Go Module Explorer for VSCode",
   "publisher": "r3inbowari",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
@@ -74,9 +74,9 @@
       "explorer": [
         {
           "id": "gomod",
-          "name": "GoMod Explorer",
+          "name": "Go Mod Explorer",
           "icon": "resources/package.svg",
-          "contextualTitle": "GoMod Explorer",
+          "contextualTitle": "Go Mod Explorer",
           "when": "go.showExplorer"
         }
       ]
@@ -170,7 +170,7 @@
         "gomod.focusMode": {
           "type": "boolean",
           "default": true,
-          "description": "Reveal while focusing."
+          "description": "Focus when revealing."
         }
       }
     }

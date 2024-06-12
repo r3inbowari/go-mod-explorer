@@ -3,13 +3,17 @@
 [![Market](https://img.shields.io/badge/source-Github-8A2BE3)](https://github.com/r3inbowari/go-mod-explorer)
 [![Release](https://img.shields.io/github/v/release/r3inbowari/go-mod-explorer)](https://github.com/r3inbowari/go-mod-explorer/releases)
 [![Market](https://img.shields.io/badge/marketplace-VS%20Code-0D67B5)](https://marketplace.visualstudio.com/items?itemName=r3inbowari.gomodexplorer)
-[![Market](https://img.shields.io/badge/registry-Open%20VSX-C060EC)](https://open-vsx.org/extension/r3inbowari/gomodexplorer)
+[![Market](https://img.shields.io/badge/eclipse-Open%20VSX-C060EC)](https://open-vsx.org/extension/r3inbowari/gomodexplorer)
 
-A VSCode extension of Go Module Explorer.
+This extension adds a pretty UI for Go Module on VSCode, mainly including:
+
+- External Dependency Viewer
+- Automatic Code Reveal
+- Go Workspace
 
 ## it looks like
 
-![image](https://user-images.githubusercontent.com/30739857/174079982-dfce53c1-2b17-4e8e-b88c-248c461b1699.png)
+![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/c6f6eba2-afce-49d1-bd1e-db3a6bbdc3b2)
 
 ## Symbols
 
@@ -20,7 +24,7 @@ A VSCode extension of Go Module Explorer.
 | ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/7347eb36-5383-4d53-b674-e817892c14cd) |    Direct Module     |
 | ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/ee9fbae5-d0b6-4ee9-84cc-19bc85db3a2a) |   Indirect Module    |
 | ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8e8778c3-2cfb-436f-9549-089ffba6ae5b) |   Replaced Module    |
-| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8502217b-effe-4a5b-b905-943ce9d7cdde) |     Work Module      |
+| ![image](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/8502217b-effe-4a5b-b905-943ce9d7cdde) |   Workspace Module   |
 
 ## Shortcuts
 
@@ -37,13 +41,13 @@ A VSCode extension of Go Module Explorer.
 | :--------------: | :-----: | :-------: | :----------------------------: |
 |    go.goroot     | String  | undefined | Custom installation directory. |
 | gomod.autoReveal | Boolean |   true    |      Enable auto reveal.       |
-| gomod.focusMode  | Boolean |   true    |     Reveal while focusing.     |
+| gomod.focusMode  | Boolean |   true    |     Focus when revealing.      |
 
-## Other
+## Others
 
-### Reveal the current activate in the Editor using your Mouse
+### Reveal the specified file in the Editor with your Mouse (Ctrl(⌘) + Shift + / ).
 
-![How to reveal](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/fa8f83bd-ad9d-436f-8807-1bdf4cb7b649)
+![How to reveal with your mouse](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/fa8f83bd-ad9d-436f-8807-1bdf4cb7b649)
 
 ## Q&A
 
@@ -67,6 +71,13 @@ A VSCode extension of Go Module Explorer.
 
     Q: Why sometimes reveal doesn't work?
     A: Limited by the VSCode API, at most three levels of recursion are allowed when revealing.
+
+---
+
+---
+
+    Q: How to avoid focusing the Go Mod Explorer when revealing?
+    A: Go to the Settings of VSCode and set gomod.focusMode to false.
 
 ---
 
