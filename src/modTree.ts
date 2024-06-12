@@ -226,7 +226,7 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
   private _autoReveal = true;
 
   /**
-   * true if we enable the code reveal while focusing. (default: true)
+   * true if we enable the focus when revealing. (default: true)
    */
   private _focusMode = true;
 

@@ -121,3 +121,6 @@ fix: missing conf gomod.focusMode.
 
 [0.3.15]
 chore: refine shortcuts rules.
+
+[0.3.16]
+chore: typos fix.
