@@ -1,9 +1,9 @@
 {
   "name": "gomodexplorer",
   "displayName": "Go Mod Explorer",
-  "description": "Go Module Explorer for VSCode",
+  "description": "Go Module Explorer for Visual Studio Code",
   "publisher": "r3inbowari",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "repository": {
     "type": "git",
     "url": "https://github.com/r3inbowari/go-mod-explorer.git"
