@@ -124,3 +124,9 @@ chore: refine shortcuts rules.
 
 [0.3.16]
 chore: typos fix.
+
+[0.3.17]
+chore: typos fix.
+
+[0.3.18]
+fix: CVE-2024-4068.
