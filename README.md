@@ -45,7 +45,7 @@ This extension adds a pretty Go Module Explorer for Visual Studio Code, mainly i
 
 ## Others
 
-### Reveal the specified file in the Editor with your Mouse (Ctrl(⌘) + Shift + / ).
+### Reveal the specified file in the Editor with your Mouse (Ctrl(⌘) + Shift + /).
 
 ![How to reveal with your mouse](https://github.com/r3inbowari/go-mod-explorer/assets/30739857/c7cf73e2-4dc2-4be0-9282-504541f3001e)
 
