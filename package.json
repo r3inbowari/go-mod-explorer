@@ -197,7 +197,6 @@
     "@vscode/test-electron": "^2.3.2"
   },
   "dependencies": {
-    "chokidar": "^3.5.3",
     "open-file-explorer": "^1.0.2"
   }
 }
