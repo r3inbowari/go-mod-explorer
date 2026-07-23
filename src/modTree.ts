@@ -29,10 +29,10 @@ import {
   StatusBarAlignment,
   TreeItemCollapsibleState,
   TextDocumentContentProvider,
+  RelativePattern,
 } from 'vscode';
 
 var path = require('path');
-var chokidar = require('chokidar');
 
 /**
  * Type of the ModItem
@@ -487,48 +487,53 @@ export class ModTree implements TreeDataProvider<ModItem>, TextDocumentContentPr
     workspace.workspaceFolders?.forEach((folder) => {
       console.log('loading:', folder.uri.fsPath);
 
-      // Initialize watcher.
-      const watcher = chokidar.watch(['**/go.mod', '**/go.sum'], {
-        ignored: /(^|[\/\\])\../,
-        persistent: true,
-        cwd: folder.uri.fsPath,
-      });
+      const watcher = workspace.createFileSystemWatcher(
+        new RelativePattern(folder, '**/{go.mod,go.sum}')
+      );
 
       let _watchMap: Map<string, string> = new Map<string, string>();
-      // Add event listeners.
-      watcher
-        .on('add', (path: any) => {
-          console.log('add:', path);
-          this._loadingBar.show();
-          this.update(parseChildURI(folder.uri, path)).then((res) => {
-            _watchMap.set(path, res);
-          });
-          this._loadingBar.hide();
-        })
-        .on('change', (path: any) => {
-          console.log('change:', path);
-          let oldModuleName = _watchMap.get(path);
-          this._loadingBar.show();
-          this.update(parseChildURI(folder.uri, path)).then((newModuleName) => {
-            _watchMap.set(path, newModuleName);
+      const onCreate = watcher.onDidCreate((uri) => {
+        console.log('add:', uri.fsPath);
+        this._loadingBar.show();
+        this.update(uri).then((res) => {
+          _watchMap.set(uri.fsPath, res);
+        });
+        this._loadingBar.hide();
+      });
+      const onChange = watcher.onDidChange((uri) => {
+        console.log('change:', uri.fsPath);
+        let oldModuleName = _watchMap.get(uri.fsPath);
+        this._loadingBar.show();
+        this.update(uri).then((newModuleName) => {
+          _watchMap.set(uri.fsPath, newModuleName);
 
-            if (oldModuleName !== newModuleName && oldModuleName !== undefined) {
-              this._rootMap.delete(oldModuleName);
-              this.updateView();
-            }
-          });
-          this._loadingBar.hide();
-        })
-        .on('unlink', (path: any) => {
-          console.log('unlink:', path);
-          this._loadingBar.show();
-          let k1 = _watchMap.get(path);
-          if (k1 !== undefined) {
-            this._rootMap.delete(k1);
+          if (oldModuleName !== newModuleName && oldModuleName !== undefined) {
+            this._rootMap.delete(oldModuleName);
             this.updateView();
           }
-          this._loadingBar.hide();
         });
+        this._loadingBar.hide();
+      });
+      const onDelete = watcher.onDidDelete((uri) => {
+        console.log('unlink:', uri.fsPath);
+        this._loadingBar.show();
+        let k1 = _watchMap.get(uri.fsPath);
+        if (k1 !== undefined) {
+          this._rootMap.delete(k1);
+          this.updateView();
+        }
+        this._loadingBar.hide();
+      });
+
+      this._context.subscriptions.push(watcher, onCreate, onChange, onDelete);
+
+      workspace.findFiles(new RelativePattern(folder, '**/go.mod')).then((goModFiles) => {
+        goModFiles.forEach((modFile) => {
+          this.update(modFile).then((moduleName) => {
+            _watchMap.set(modFile.fsPath, moduleName);
+          });
+        });
+      });
     });
 
     // watch whether goroot has changed in the settings file by user
