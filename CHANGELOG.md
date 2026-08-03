@@ -130,3 +130,7 @@ chore: typos fix.
 
 [0.3.18]
 fix: CVE-2024-4068.
+
+[0.3.19]
+fix: use VS Code file watcher @Suxto
+fix: remove chokidar dependency @Suxto
