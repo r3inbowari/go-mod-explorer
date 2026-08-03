@@ -46,8 +46,16 @@ export function getParentNode(path: string): string {
 
 export function cdGO(): string {
   const workSpaceConfig = workspace.getConfiguration('go');
+  const goroot = workSpaceConfig.get<string>('goroot');
+
+  // An unset go.goroot is valid; in that case the shell resolves Go from PATH.
+  if (!goroot || goroot.trim() === '') {
+    return '';
+  }
+
   const slash = process.platform === 'win32' ? '\\' : '/';
-  return workSpaceConfig.get('goroot') !== null ? `cd ${workSpaceConfig.get('goroot')}${slash}bin &&` : '';
+  const binPath = `${goroot}${slash}bin`;
+  return process.platform === 'win32' ? `cd /d "${binPath}" &&` : `cd "${binPath}" &&`;
 }
 
 export function checkGo() {
